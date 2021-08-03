@@ -1,5 +1,7 @@
-//
-// Created by Tom on 31/07/2021.
-//
+#include "utils.h"
+#include "iostream"
 
-#include "main.h"
+int main(int argc, char *argv[]) {
+    std::vector<std::vector<std::string>> classified = readCSV(argv[1]);
+    std::vector<std::vector<std::string>> unclassified = readCSV(argv[2]);
+}
