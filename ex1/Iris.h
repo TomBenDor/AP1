@@ -3,16 +3,13 @@
 
 
 #include <string>
+#include "Comparable.h"
 
-class Iris {
+class Iris : public Comparable<Iris> {
 private:
     double petalLength, petalWidth, sepalLength, sepalWidth;
-
 public:
-
-//    virtual double distance(const Iris &other) const;
-//    double distance(Classifiable<Iris> *other) override;
-    double distance(Iris &other) const;
+    double distance(Comparable<Iris>) const override;
 
     double getPetalLength() const;
 
@@ -21,7 +18,6 @@ public:
     double getSepalWidth() const;
 
     double getSepalLength() const;
-
 
     Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth);
 

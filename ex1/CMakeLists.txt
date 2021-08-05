@@ -3,4 +3,6 @@ project(AP1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AP1 main.cpp Iris.h Iris.cpp main.h utils.cpp utils.h)
+add_executable(AP1 main.cpp Iris.h Iris.cpp main.h utils.cpp utils.h Classifiable.cpp
+        Classifiable.h Comparable.cpp Classifiable.h Classified.h Classified.cpp Unclassified.cpp Unclassified.h
+        Classifier.cpp Classifier.h KnnClassifier.h KnnClassifier.cpp)
