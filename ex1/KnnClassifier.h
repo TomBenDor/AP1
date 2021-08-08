@@ -1,17 +1,18 @@
-#include "Classifier.h"
-#include "Classified.h"
+#include "Iris.h"
 #include "vector"
 #include "string"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H
 
-template<class T>
-class KnnClassifier : public Classifier<T> {
+class KnnClassifier {
 private:
-    std::vector<Classified<T>> data;
+    std::vector<Iris> data;
+    int k;
 public:
-    std::string classify(Unclassified<T>) override;
+    explicit KnnClassifier(const std::vector<Iris> &data,int k);
+
+    std::string classify(Iris &unclassified);
 };
 
 

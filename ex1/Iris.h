@@ -3,13 +3,13 @@
 
 
 #include <string>
-#include "Comparable.h"
 
-class Iris : public Comparable<Iris> {
+class Iris {
 private:
     double petalLength, petalWidth, sepalLength, sepalWidth;
+    std::string type;
 public:
-    double distance(Comparable<Iris>) const override;
+    double distance(const Iris &) const;
 
     double getPetalLength() const;
 
@@ -19,7 +19,19 @@ public:
 
     double getSepalLength() const;
 
+    std::string getType() const;
+
     Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth);
+
+    Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth, std::string type);
+
+    Iris(Iris &&o) = default;
+
+    Iris(const Iris &o) = default;
+
+    Iris &operator=(const Iris &) = default;
+
+    ~Iris() = default;
 
 };
 

@@ -4,7 +4,7 @@
 #include "utils.h"
 
 
-std::vector<std::vector<std::string>> readCSV(const std::string& path) {
+std::vector<std::vector<std::string>> readCSV(const std::string &path) {
     std::ifstream fin(path);
 
     if (!fin.is_open()) throw std::runtime_error("Could not open file");
