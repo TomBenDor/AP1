@@ -23,6 +23,7 @@ public:
     double getSepalLength() const;
 
     std::string getType() const override;
+
     //Construct an iris using a vector with its coordinates
     explicit Iris(const std::vector<std::string> &);
 
