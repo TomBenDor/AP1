@@ -4,13 +4,14 @@
 
 #include <string>
 #include <vector>
+#include "Classifiable.h"
 
-class Iris {
+class Iris : public Classifiable<Iris> {
 private:
     double petalLength, petalWidth, sepalLength, sepalWidth;
-    std::string type;
+    std::string type = "None";
 public:
-    double distance(const Iris &) const;
+    double distance(const Iris &) const override;
 
     double getPetalLength() const;
 
@@ -20,7 +21,7 @@ public:
 
     double getSepalLength() const;
 
-    std::string getType() const;
+    std::string getType() const override;
 
     Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth);
 
