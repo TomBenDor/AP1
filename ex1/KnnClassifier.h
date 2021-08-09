@@ -3,18 +3,27 @@
 #include "vector"
 #include "string"
 #include "map"
-#include "Comparator.h"
 #include "type_traits"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H
-
 template<class T>
 class KnnClassifier {
     static_assert(std::is_base_of<Classifiable<T>, T>::value, "T must be subclass of Classifiable!");
 private:
     std::vector<T> data;
     int k;
+    //The comparator class
+    class Comparator {
+        T compareTo;
+    public:
+        bool operator()(const T &t1, const T &t2){
+            return compareTo.distance(t1)<compareTo.distance(t2);
+        }
+
+        explicit Comparator(T t): compareTo(t){
+        }
+    };
 public:
     explicit KnnClassifier(const std::vector<T> &data, int k) : k(k) {
         for (auto object: data) {
