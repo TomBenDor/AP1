@@ -1,7 +1,7 @@
 # KNN Classifier
 
 ## Implementation
-To keep the code generic, we created an interface called `Classified`:
+To keep the code generic, we created an interface called `Classifiable`:
 ```c++
 template<class T>
 class Classifiable {
@@ -30,9 +30,10 @@ std::string classify(T &unclassified) {...}
 ```
 who's job is to predict the type of the unclassified object based on our data.
 `classify` sorts the data vector based on the distances between any `T` in the date and `unclassified`.
+the comparison is done by a functor called `Comparator`.
 
 Then we copy the first `k` elements of the sorted vector into another vector.
-The next step is to find the time that appears the most in the new vector.
+The next step is to find the type that appears the most among the elements in the vector.
 
 We are using a `map` called `predictions` to store the number of occurrences per type:
 ```c++
