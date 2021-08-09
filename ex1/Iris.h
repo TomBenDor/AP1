@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <vector>
 
 class Iris {
 private:
@@ -25,6 +26,8 @@ public:
 
     Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth, std::string type);
 
+    explicit Iris(const std::vector<std::string> &);
+
     Iris(Iris &&o) = default;
 
     Iris(const Iris &o) = default;
@@ -32,8 +35,9 @@ public:
     Iris &operator=(const Iris &) = default;
 
     ~Iris() = default;
-
 };
+
+std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>>&);
 
 
 #endif //AP1_IRIS_H
