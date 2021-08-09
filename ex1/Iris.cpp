@@ -6,7 +6,7 @@ double Iris::getPetalLength() const {
 }
 
 double Iris::getPetalWidth() const {
-    return petalLength;
+    return petalWidth;
 }
 
 double Iris::getSepalLength() const {
@@ -17,17 +17,33 @@ double Iris::getSepalWidth() const {
     return sepalWidth;
 }
 
-
-Iris::Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth) : petalLength(petalLength),
-                                                                                           petalWidth(petalWidth),
-                                                                                           sepalLength(sepalLength),
-                                                                                           sepalWidth(sepalWidth) {
+std::string Iris::getType() const {
+    return type;
 }
 
-double Iris::distance(Iris &other) const {
+double Iris::distance(const Iris &other) const {
     return std::sqrt(std::pow(this->sepalWidth - other.getSepalWidth(), 2)
                      + std::pow(this->sepalLength - other.getSepalLength(), 2) +
                      std::pow(this->petalLength - other.getPetalLength(), 2)
-                     + std::pow(this->petalWidth - other.getPetalWidth(), 2));;
+                     + std::pow(this->petalWidth - other.getPetalWidth(), 2));
 }
 
+Iris::Iris(const std::vector<std::string> &v) :
+        sepalLength(std::stod(v.at(0))),
+        sepalWidth(std::stod(v.at(1))),
+        petalWidth(std::stod(v.at(2))),
+        petalLength(std::stod(v.at(3))) {
+    if (v.size() == 5) {
+        this->type = v.at(4);
+    }
+
+}
+
+std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data) {
+    std::vector<Iris> result;
+    for (const auto &v:data) {
+        Iris iris(v);
+        result.push_back(iris);
+    }
+    return result;
+}
