@@ -30,7 +30,7 @@ std::string classify(T &unclassified) {...}
 ```
 who's job is to predict the type of the unclassified object based on our data.
 `classify` sorts the data vector based on the distances between any `T` in the date and `unclassified`.
-the comparison is done by a functor called `Comparator`.
+The comparison is done by a functor called `Comparator`.
 
 Then we copy the first `k` elements of the sorted vector into another vector.
 The next step is to find the type that appears the most among the elements in the vector.
@@ -41,3 +41,11 @@ std::map<std::string, int> predictions;
 ```
 `classify` will return the key which value is the highest.
 ## Running
+You can run the project using our provided `CMakeLists.txt` file:
+```
+mkdir build
+cd build
+cmake ..
+make
+./AP1 <path-to-classified.csv> <path-to-unclassified.csv> <path-to-output.csv>
+```
