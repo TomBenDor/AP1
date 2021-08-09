@@ -3,7 +3,7 @@
 #include <sstream>
 #include "utils.h"
 
-
+//Read a csv file and return a matrix of its lines
 std::vector<std::vector<std::string>> readCSV(const std::string &path) {
     std::ifstream fin(path);
 
@@ -20,8 +20,17 @@ std::vector<std::vector<std::string>> readCSV(const std::string &path) {
         while (std::getline(ss, cell, ',')) {
             row.push_back(cell);
         }
-        data.push_back(row);
+        if (!row.empty())
+            data.push_back(row);
     }
 
     return data;
+}
+//Write to a csv file
+void writeCSV(const std::string &path, const std::vector<std::string> &data) {
+    std::ofstream fout(path);
+
+    for (const std::string &line:data) {
+        fout << line << std::endl;
+    }
 }

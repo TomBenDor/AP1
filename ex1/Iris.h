@@ -3,13 +3,16 @@
 
 
 #include <string>
-
-class Iris {
+#include <vector>
+#include "Classifiable.h"
+//Iris class
+class Iris : public Classifiable<Iris> {
 private:
+    //coordinates and type
     double petalLength, petalWidth, sepalLength, sepalWidth;
-    std::string type;
+    std::string type = "None";
 public:
-    double distance(const Iris &) const;
+    double distance(const Iris &) const override;
 
     double getPetalLength() const;
 
@@ -19,11 +22,10 @@ public:
 
     double getSepalLength() const;
 
-    std::string getType() const;
+    std::string getType() const override;
 
-    Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth);
-
-    Iris(double petalLength, double petalWidth, double sepalLength, double sepalWidth, std::string type);
+    //Construct an iris using a vector with its coordinates
+    explicit Iris(const std::vector<std::string> &);
 
     Iris(Iris &&o) = default;
 
@@ -32,8 +34,9 @@ public:
     Iris &operator=(const Iris &) = default;
 
     ~Iris() = default;
-
 };
+//Create a vector of irises using a matrix
+std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &);
 
 
 #endif //AP1_IRIS_H
