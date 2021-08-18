@@ -5,10 +5,12 @@
 #include "KnnClassifier.h"
 
 int main(int argc, char *argv[]) {
-    //Initialize a classifier
+    //Initialize a knnClassifier
     std::vector<Iris> classified = toIrisVector(readCSV(argv[1]));
     std::vector<Iris> unclassified = toIrisVector(readCSV(argv[2]));
-    Classifier<Iris> *classifier = new KnnClassifier<Iris>(classified, 5);
+
+    KnnClassifier<Iris> knnClassifier(classified, 5);
+    Classifier<Iris> *classifier = &knnClassifier;
     //Classify
     std::vector<std::string> result;
     result.reserve(unclassified.size());
@@ -17,5 +19,4 @@ int main(int argc, char *argv[]) {
     }
     //Write to the file
     writeCSV(argv[3], result);
-    delete classifier;
 }
