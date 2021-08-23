@@ -1,4 +1,5 @@
 #include "Iris.h"
+#include "../utils.h"
 #include <cmath>
 
 double Iris::getPetalLength() const {
@@ -29,13 +30,17 @@ double Iris::distance(const Iris &other) const {
 }
 
 Iris::Iris(const std::vector<std::string> &v) :
-        sepalLength(std::stod(v.at(0))),
-        sepalWidth(std::stod(v.at(1))),
-        petalWidth(std::stod(v.at(2))),
-        petalLength(std::stod(v.at(3))) {
+        sepalLength(std::stod(v[0])),
+        sepalWidth(std::stod(v[1])),
+        petalWidth(std::stod(v[2])),
+        petalLength(std::stod(v[3])) {
     if (v.size() == 5) {
         this->type = v.at(4);
     }
+
+}
+
+Iris::Iris(const std::string &s) : Iris(split(s, ' ')) {
 
 }
 
