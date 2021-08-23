@@ -13,11 +13,12 @@ int main(int argc, char *argv[]) {
     KnnClassifier<Iris> knnClassifier(classified, 5);
     Classifier<Iris> *classifier = &knnClassifier;
 
-    UDPServer udpServer(INADDR_ANY, 5555);
+    UDPServer udpServer(INADDR_ANY, htons(5555));
     Socket *server = &udpServer;
 
     Iris iris(server->recv());
     server->send(classifier->classify(iris));
+    server->close();
 
     return 0;
 }

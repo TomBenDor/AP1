@@ -9,7 +9,7 @@ private:
     int sock;
     struct sockaddr_in from;
 public:
-    UDPServer(int ip, int port);
+    UDPServer(in_addr_t ip, in_port_t port);
 
     void send(std::string string) override;
 
