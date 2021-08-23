@@ -3,7 +3,7 @@
 #include "../utils.h"
 #include "KnnClassifier.h"
 #include "Classifier.h"
-#include "Server.h"
+#include "../Socket.h"
 #include "UDPServer.h"
 
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     Classifier<Iris> *classifier = &knnClassifier;
 
     UDPServer udpServer(INADDR_ANY, 5555);
-    Server *server = &udpServer;
+    Socket *server = &udpServer;
 
     Iris iris(server->recv());
     server->send(classifier->classify(iris));

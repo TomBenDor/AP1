@@ -1,10 +1,10 @@
-#include "Server.h"
+#include "../Socket.h"
 #include <netinet/in.h>
 
 #ifndef CLIENT_UDPSERVER_H
 #define CLIENT_UDPSERVER_H
 
-class UDPServer : public Server {
+class UDPServer : public Socket {
 private:
     int sock;
     struct sockaddr_in from;

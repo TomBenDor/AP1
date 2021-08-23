@@ -1,8 +1,8 @@
-#ifndef CLIENT_SERVER_H
-#define CLIENT_SERVER_H
+#ifndef CLIENT_SOCKET_H
+#define CLIENT_SOCKET_H
 
 
-class Server {
+class Socket {
 public:
     static const int buffer_size = 4096;
 
@@ -14,4 +14,4 @@ public:
 };
 
 
-#endif //CLIENT_SERVER_H
+#endif //CLIENT_SOCKET_H
