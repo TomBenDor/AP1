@@ -1,12 +1,8 @@
 #include "TCPServer.h"
 #include <iostream>
-#include <sys/socket.h>
 #include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include "../Socket.h"
 
 TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK_STREAM, 0)), from() {
     if (sockId < 0) {
@@ -28,7 +24,6 @@ TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK
 }
 
 void TCPServer::send(std::string string) {
-    std::cout << string<<std::endl;
     int sent_bytes = ::send(this->clientSock, string.c_str(), strlen(string.c_str()), 0);
     if (sent_bytes < 0) {
         perror("error sending to client");
@@ -48,10 +43,8 @@ std::string TCPServer::recv() {
     char buffer[Socket::buffer_size];
     int expected_data_len = Socket::buffer_size;
     int read_bytes = ::recv(this->clientSock, buffer, expected_data_len, 0);
-    if (read_bytes == 0) {
-        // connection is closed
-    } else if (read_bytes < 0) {
-        // error
+    if (read_bytes < 0) {
+        perror("error writing to sock")
     }
     std::string res(buffer);
     return res;

@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "../Socket.h"
+
 #ifndef CLIENT_TCPSERVER_H
 #define CLIENT_TCPSERVER_H
 
@@ -14,7 +15,7 @@ private:
     int sockId;
     int queueLen = 5;
     struct sockaddr_in from;
-    int clientSock=0;
+    int clientSock = 0;
 public:
     TCPServer(in_addr_t ip, in_port_t port);
 
