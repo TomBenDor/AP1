@@ -6,6 +6,7 @@
 #include "../utils.h"
 #include "../Socket.h"
 #include "UDPClient.h"
+#include "TCPClient.h"
 
 int main(int argc, char *argv[]) {
     std::vector<std::vector<std::string>> unclassified = readCSV(argv[1]);
@@ -14,7 +15,7 @@ int main(int argc, char *argv[]) {
     Socket *client = &udpClient;
     std::string msg;
     for (const std::vector<std::string> &i:unclassified) {
-        for (const std::string &j:i ) {
+        for (const std::string &j:i) {
             msg.append(j);
             msg.append(" ");
         }
@@ -22,8 +23,8 @@ int main(int argc, char *argv[]) {
         msg.append("\n");
     }
     client->send(msg);
-    std::cout << client->recv() << std::endl;
-
+    std::string types = client->recv();
+    writeCSV(argv[2], split(types, '\n'));
     client->close();
 
     return 0;
