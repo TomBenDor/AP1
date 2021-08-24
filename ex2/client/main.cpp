@@ -12,8 +12,16 @@ int main(int argc, char *argv[]) {
 
     UDPClient udpClient(inet_addr("127.0.0.1"), htons(5555));
     Socket *client = &udpClient;
-
-    client->send(unclassified[0][0] + " " + unclassified[0][1] + " " + unclassified[0][2] + " " + unclassified[0][3]);
+    std::string msg;
+    for (const std::vector<std::string> &i:unclassified) {
+        for (const std::string &j:i ) {
+            msg.append(j);
+            msg.append(" ");
+        }
+        msg.pop_back();
+        msg.append("\n");
+    }
+    client->send(msg);
     std::cout << client->recv() << std::endl;
 
     client->close();

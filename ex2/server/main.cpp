@@ -16,8 +16,15 @@ int main(int argc, char *argv[]) {
     UDPServer udpServer(INADDR_ANY, htons(5555));
     Socket *server = &udpServer;
 
-    Iris iris(server->recv());
-    server->send(classifier->classify(iris));
+    std::string msg = server->recv();
+    std::vector<std::string> indices = split(msg, '\n');
+    std::string types;
+    for (const std::string &index:indices) {
+        Iris iris(index);
+        types.append(classifier->classify(iris));
+        types.append("\n");
+    }
+    server->send(types);
     server->close();
 
     return 0;
