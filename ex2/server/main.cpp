@@ -5,7 +5,7 @@
 #include "Classifier.h"
 #include "../Socket.h"
 #include "UDPServer.h"
-
+#include "TCPServer.h"
 
 int main(int argc, char *argv[]) {
     std::vector<Iris> classified = toIrisVector(readCSV(argv[1]));
