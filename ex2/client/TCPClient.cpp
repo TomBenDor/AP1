@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <cstring>
 #include "TCPClient.h"
-#include "iostream"
+
 void TCPClient::send(std::string string) {
     int sent_bytes = ::send(sock, string.c_str(), strlen(string.c_str()), 0);
     if (sent_bytes < 0) {
@@ -17,7 +17,6 @@ std::string TCPClient::recv() {
     if (read_bytes < 0) {
         perror("error reading from sock");
     }
-    std::cout << strlen(buffer)<<std::endl;
     std::string msg(buffer, strlen(buffer));
     return msg;
 }
@@ -26,7 +25,7 @@ void TCPClient::close() {
     ::close(this->sock);
 }
 
-TCPClient::TCPClient(in_addr_t ip, in_port_t port) : sock(socket(AF_INET, SOCK_STREAM, 0)), sin(){
+TCPClient::TCPClient(in_addr_t ip, in_port_t port) : sock(socket(AF_INET, SOCK_STREAM, 0)), sin() {
     if (sock < 0) {
         perror("error creating socket");
     }

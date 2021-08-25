@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
         msg.pop_back();
         msg.append("\n");
     }
+    msg.pop_back();
     client->send(msg);
     std::string types = client->recv();
     writeCSV(argv[2], split(types, '\n'));

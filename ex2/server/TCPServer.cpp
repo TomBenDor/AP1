@@ -44,12 +44,10 @@ std::string TCPServer::recv() {
     int expected_data_len = Socket::buffer_size;
     int read_bytes = ::recv(this->clientSock, buffer, expected_data_len, 0);
     if (read_bytes < 0) {
-        perror("error writing to sock")
+        perror("error writing to sock");
     }
     std::string res(buffer);
     return res;
-
-
 }
 
 void TCPServer::close() {
