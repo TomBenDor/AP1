@@ -13,8 +13,15 @@ int main(int argc, char *argv[]) {
     KnnClassifier<Iris> knnClassifier(classified, 5);
     Classifier<Iris> *classifier = &knnClassifier;
 
-    UDPServer udpServer(INADDR_ANY, htons(5555));
-    Socket *server = &udpServer;
+    std::string serverType(argv[2]);
+    Socket *server = nullptr;
+    if (serverType == "TCP") {
+        server = new TCPServer(INADDR_ANY, htons(55555));
+    } else if (serverType == "UDP") {
+        server = new UDPServer(INADDR_ANY, htons(55556));
+    } else {
+        perror("Unrecognized server type");
+    }
 
     std::string msg = server->recv();
     std::vector<std::string> indices = split(msg, '\n');
@@ -26,6 +33,7 @@ int main(int argc, char *argv[]) {
     }
     server->send(types);
     server->close();
+    delete server;
 
     return 0;
 }

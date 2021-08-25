@@ -11,7 +11,7 @@
 int main(int argc, char *argv[]) {
     std::vector<std::vector<std::string>> unclassified = readCSV(argv[1]);
 
-    UDPClient udpClient(inet_addr("127.0.0.1"), htons(5555));
+    UDPClient udpClient(inet_addr("127.0.0.1"), htons(55556));
     Socket *client = &udpClient;
     std::string msg;
     for (const std::vector<std::string> &i:unclassified) {
