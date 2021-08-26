@@ -31,8 +31,7 @@ the `KNNClassifier` from the previous assignment and returns the types.
 
 The program creates a `TCPClient` and a `UDPClient` which both connect their matching server. The client uses the
 factory design pattern when it gets the selected protocol from the user. Then, the unclassified data is sent to the
-server via one of the sockets. The server receives the calculated types and the client writes the output into a csv
-file.
+server via one of the sockets. The client receives the calculated types and writes them into a csv file.
 
 ## Running
 
