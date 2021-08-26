@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     Classifier<Iris> *classifier = &knnClassifier;
 
     std::string serverType(argv[2]);
-    Socket *server = nullptr;
+    Socket *server;
     if (serverType == "TCP") {
         server = new TCPServer(INADDR_ANY, htons(55555));
     } else if (serverType == "UDP") {
@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
     } else {
         perror("Unrecognized server type");
     }
-
     std::string msg = server->recv();
     std::vector<std::string> indices = split(msg, '\n');
     std::string types;
@@ -31,6 +30,8 @@ int main(int argc, char *argv[]) {
         types.append(classifier->classify(iris));
         types.append("\n");
     }
+
+
     server->send(types);
     server->close();
     delete server;

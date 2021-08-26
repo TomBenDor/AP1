@@ -32,7 +32,6 @@ UDPClient::UDPClient(in_addr_t ip, in_port_t port) : sock(socket(AF_INET, SOCK_D
         perror("error creating sock");
     }
 
-
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = ip;

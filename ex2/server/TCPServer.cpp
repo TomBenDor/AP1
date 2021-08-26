@@ -1,8 +1,8 @@
 #include "TCPServer.h"
 #include <iostream>
-#include <stdio.h>
 #include <unistd.h>
-#include <string.h>
+#include "stdio.h"
+#include "cstring"
 
 TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK_STREAM, 0)), from() {
     if (sockId < 0) {
@@ -18,9 +18,7 @@ TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK
     if (bind(sockId, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
-    if (listen(sockId, this->queueLen) < 0) {
-        perror("error listening to a socket");
-    }
+
 }
 
 void TCPServer::send(std::string string) {
@@ -32,9 +30,11 @@ void TCPServer::send(std::string string) {
 
 std::string TCPServer::recv() {
     if (this->clientSock == 0) {
+        if (listen(sockId, this->queueLen) < 0) {
+            perror("error listening to a socket");
+        }
         unsigned int addr_len = sizeof(this->from);
         this->clientSock = accept(sockId, (struct sockaddr *) &from, &addr_len);
-
         if (this->clientSock < 0) {
             perror("error accepting client");
         }
