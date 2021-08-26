@@ -40,7 +40,7 @@ You can run the project using our provided `CMakeLists.txt` file:
 
 **Executing the servers**
 
-```
+```bash
 mkdir build-server
 cd build-server
 cmake ..
@@ -49,17 +49,17 @@ make
 
 Then execute both servers in two different processes:
 
-```
+```bash
 ./Server UDP <path-to-classified.csv>
 ```
 
-```
+```bash
 ./Server TCP <path-to-classified.csv>
 ```
 
 **Executing the client**
 
-```
+```bash
 mkdir build-client
 cd build-client
 cmake ..
