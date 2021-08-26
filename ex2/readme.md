@@ -1,6 +1,6 @@
-# Server\Client - TCP\UDP
+# Remote Classifier - TCP \ UDP
 
-# Implementation
+## Implementation
 
 We used an interface called `Socket` to make the code polymorphic:
 
@@ -16,21 +16,53 @@ class Socket {
 
 We created 4 classes that implement `Socket`: `TCPServer`, `TCPServer`,`UDPServer` and `UDPClient`.
 
-## The servers
+### The servers
 
-In order to run both types of servers from the same program, we used the factory design pattern, in order to run each
-server, the user types its type, i.e. TCP or UDP, as the second argument in the command line (the first being the
-directory of the classified data).
+To run both types of servers from the same program, we used the factory design pattern to run each server by the
+required protocol. We get both the server protocol and the path to the classified objects via the command line
+parameters.
 
-Then, using the `Socket` interface, we can set the server type at runtime, the servers bind their sockets in the
-constructor. Then, they wait for a client (Each server implements that differently), the servers get the data as a
-string of indices seperated by spaces and new lines. the server creates an `Iris` for each set of indices, classifies it
-using the `KNNClassifier` from the first assignment and returns the types.
+Using the `Socket` interface, we can set the server type at runtime, by initialising the servers we bind their sockets.
+Then, they wait for a client (Each server implements that differently), the servers get the data as a string of indices
+separated by spaces and new lines. The selected server creates an `Iris` for each set of indices, classifies it using
+the `KNNClassifier` from the previous assignment and returns the types.
 
-## The clients
+### The clients
 
-The clients also use the factory design pattern because they need to be set at runtime. The program creates a
-`TCPClient` and a `UDPClient`, when a type is chosen, the client reads the unclassified data from the provided
-directory, sends it to the server, receives the calculated types and writes them to the directory of the new file.
+The program creates a `TCPClient` and a `UDPClient` which both connect their matching server. The client uses the
+factory design pattern when it gets the selected protocol from the user. Then, the unclassified data is sent to the
+server via one of the sockets. The server receives the calculated types and the client writes the output into a csv
+file.
 
 ## Running
+
+You can run the project using our provided `CMakeLists.txt` file:
+
+**Executing the servers**
+
+```
+mkdir build-server
+cd build-server
+cmake ..
+make
+```
+
+Then execute both servers in two different processes:
+
+```
+./Server UDP <path-to-classified.csv>
+```
+
+```
+./Server TCP <path-to-classified.csv>
+```
+
+**Executing the client**
+
+```
+mkdir build-client
+cd build-client
+cmake ..
+make
+./Client <protocol (UDP \ TCP)> <path-to-unclassified.csv> <path-to-output.csv>
+```
