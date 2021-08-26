@@ -9,12 +9,12 @@
 
 int main(int argc, char *argv[]) {
     //Get the classified data
-    std::vector<Iris> classified = toIrisVector(readCSV(argv[1]));
+    std::vector<Iris> classified = toIrisVector(readCSV(argv[2]));
     //Initialize the classifier
     KnnClassifier<Iris> knnClassifier(classified, 5);
     Classifier<Iris> *classifier = &knnClassifier;
     //Initialize the server according to the command line arguments
-    std::string serverType(argv[2]);
+    std::string serverType(argv[1]);
     Socket *server;
     if (serverType == "TCP") {
         server = new TCPServer(INADDR_ANY, htons(55555));
