@@ -1,11 +1,6 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
 #include "../Socket.h"
+#include <netinet/in.h>
+#include "string"
 
 #ifndef CLIENT_TCPSERVER_H
 #define CLIENT_TCPSERVER_H
@@ -25,6 +20,7 @@ public:
 
     void close() override;
 
+    ~TCPServer() override = default;
 };
 
 

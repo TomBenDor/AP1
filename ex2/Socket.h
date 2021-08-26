@@ -11,6 +11,8 @@ public:
     virtual std::string recv() = 0;
 
     virtual void close() = 0;
+
+    virtual ~Socket() = default;
 };
 
 

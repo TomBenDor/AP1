@@ -16,6 +16,8 @@ public:
     std::string recv() override;
 
     void close() override;
+
+    ~UDPServer() override = default;
 };
 
 

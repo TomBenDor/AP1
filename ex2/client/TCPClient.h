@@ -7,6 +7,7 @@
 
 class TCPClient : public Socket {
 private:
+    bool isConnected = false;
     int sock;
     struct sockaddr_in sin;
 public:
@@ -17,6 +18,8 @@ public:
     void close() override;
 
     TCPClient(in_addr_t, in_port_t);
+
+    ~TCPClient() override = default;
 };
 
 

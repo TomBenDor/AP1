@@ -16,6 +16,8 @@ public:
     void close() override;
 
     UDPClient(in_addr_t, in_port_t);
+
+    ~UDPClient() override = default;
 };
 
 
