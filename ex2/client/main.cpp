@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
     }
     //Split the data in order to send it
     std::string msg;
-    for (const std::vector<std::string> &i:unclassified) {
-        for (const std::string &j:i) {
+    for (const std::vector<std::string> &i: unclassified) {
+        for (const std::string &j: i) {
             msg.append(j);
             msg.append(" ");
         }

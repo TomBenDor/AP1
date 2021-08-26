@@ -46,7 +46,7 @@ Iris::Iris(const std::string &s) : Iris(split(s, ' ')) {
 
 std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data) {
     std::vector<Iris> result;
-    for (const auto &v:data) {
+    for (const auto &v: data) {
         Iris iris(v);
         result.push_back(iris);
     }

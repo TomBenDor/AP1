@@ -27,7 +27,7 @@ std::vector<std::vector<std::string>> readCSV(const std::string &path) {
 void writeCSV(const std::string &path, const std::vector<std::string> &data) {
     std::ofstream fout(path);
 
-    for (const std::string &line:data) {
+    for (const std::string &line: data) {
         fout << line << std::endl;
     }
 }

@@ -50,7 +50,7 @@ public:
         }
         //Count the appearances of each type
         std::map<std::string, int> predictions;
-        for (auto object:knn) {
+        for (auto object: knn) {
             if (predictions.count(object.getType()) == 0) {
                 predictions[object.getType()] = 0;
             }
@@ -61,7 +61,7 @@ public:
         int max = 0;
         std::string maxType;
 
-        for (const auto &pair : predictions) {
+        for (const auto &pair: predictions) {
 
             if (max < pair.second) {
                 maxType = pair.first;

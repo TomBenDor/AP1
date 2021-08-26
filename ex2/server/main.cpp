@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     std::vector<std::string> indices = split(msg, '\n');
     std::string types;
     //Classify each of the irises
-    for (const std::string &index:indices) {
+    for (const std::string &index: indices) {
         Iris iris(index);
         types.append(classifier->classify(iris));
         types.append("\n");
