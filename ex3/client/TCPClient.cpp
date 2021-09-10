@@ -3,7 +3,7 @@
 #include <cstring>
 #include "TCPClient.h"
 
-void TCPClient::send(std::string string) {
+void TCPClient::send(const std::string &string) {
     //Check if the socket is connected to a server
     if (!isConnected) {
         //Connect to the server
@@ -13,17 +13,17 @@ void TCPClient::send(std::string string) {
         isConnected = true;
     }
     //Send the message
-    int sent_bytes = ::send(sock, string.c_str(), strlen(string.c_str()), 0);
+    ssize_t sent_bytes = ::send(sock, string.c_str(), strlen(string.c_str()), 0);
     if (sent_bytes < 0) {
         perror("error writing to sock");
     }
 }
 
 
-std::string TCPClient::recv() {
+std::string TCPClient::recv() const {
     //Read the message from the socket and save in the buffer
-    char buffer[Socket::buffer_size];
-    int read_bytes = ::recv(sock, buffer, Socket::buffer_size, 0);
+    char buffer[4096];
+    ssize_t read_bytes = ::recv(sock, buffer, 4096, 0);
     if (read_bytes < 0) {
         perror("error reading from sock");
     }
@@ -32,7 +32,7 @@ std::string TCPClient::recv() {
     return msg;
 }
 
-void TCPClient::close() {
+void TCPClient::close() const {
     ::close(this->sock);
 }
 

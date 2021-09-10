@@ -4,13 +4,11 @@
 #include <arpa/inet.h>
 #include "vector"
 #include "../utils.h"
-#include "../Socket.h"
 #include "TCPClient.h"
 
-int main(int argc, char *argv[]) {
+int main() {
     //Crete clients
-    TCPClient tcpClient(inet_addr("127.0.0.1"), htons(55555));
-    Socket *client = &tcpClient;
+    TCPClient client(inet_addr("127.0.0.1"), htons(55555));
     //Get parameters from user
     std::string parameters;
     std::getline(std::cin, parameters);
@@ -30,13 +28,13 @@ int main(int argc, char *argv[]) {
     }
     msg.pop_back();
     //Send the message
-    client->send(msg);
+    client.send(msg);
     //Receive the calculated types
-    std::string types = client->recv();
+    std::string types = client.recv();
     //Write the types to the new file
     writeCSV(params[1], split(types, '\n'));
     //Close the sockets
-    tcpClient.close();
+    client.close();
 
     return 0;
 }

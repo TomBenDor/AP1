@@ -1,5 +1,4 @@
 #include "TCPServer.h"
-#include <iostream>
 #include <unistd.h>
 #include "stdio.h"
 #include "cstring"
@@ -19,43 +18,43 @@ TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK
     if (bind(sockId, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
+    if (listen(sockId, this->queueLen) < 0) {
+        perror("error listening to a socket");
+    }
 }
 
-void TCPServer::send(std::string string) {
+void TCPServer::send(int clientSock, const std::string &string) {
     //Send the string through the socket
-    int sent_bytes = ::send(this->clientSock, string.c_str(), strlen(string.c_str()), 0);
+    size_t sent_bytes = ::send(clientSock, string.c_str(), strlen(string.c_str()), 0);
     if (sent_bytes < 0) {
         perror("error sending to client");
     }
 }
 
-std::string TCPServer::recv() {
-    //Check if a client is connected
-    if (this->clientSock == 0) {
-        //Listen and accept the client
-        if (listen(sockId, this->queueLen) < 0) {
-            perror("error listening to a socket");
-        }
-        unsigned int addr_len = sizeof(this->from);
-        this->clientSock = accept(sockId, (struct sockaddr *) &from, &addr_len);
-        if (this->clientSock < 0) {
-            perror("error accepting client");
-        }
+
+int TCPServer::accept() {
+    unsigned int addr_len = sizeof(this->from);
+    int sock = ::accept(sockId, (struct sockaddr *) &from, &addr_len);
+    if (sock < 0) {
+        perror("error accepting client");
     }
-    //Receive a message and save it in the buffer
-    char buffer[Socket::buffer_size];
-    int expected_data_len = Socket::buffer_size;
-    int read_bytes = ::recv(this->clientSock, buffer, expected_data_len, 0);
+    return sock;
+}
+
+void TCPServer::close() const {
+    //Close the socket
+    ::close(this->sockId);
+
+}
+
+std::string TCPServer::recv(int clientSock) {
+    char buffer[4096];
+    int expected_data_len = 4096;
+    ssize_t read_bytes = ::recv(clientSock, buffer, expected_data_len, 0);
     if (read_bytes < 0) {
         perror("error writing to sock");
     }
     //Create a string and return it
     std::string res(buffer);
     return res;
-}
-
-void TCPServer::close() {
-    //Close the socket
-    ::close(this->sockId);
-
 }

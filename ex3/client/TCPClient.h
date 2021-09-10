@@ -2,24 +2,23 @@
 #define CLIENT_TCPCLIENT_H
 
 #include <netinet/in.h>
-#include "../Socket.h"
 #include "string"
 
-class TCPClient : public Socket {
+class TCPClient {
 private:
     bool isConnected = false;
     int sock;
     struct sockaddr_in sin;
 public:
-    void send(std::string) override;
+    void send(const std::string &);
 
-    std::string recv() override;
+    std::string recv() const;
 
-    void close() override;
+    void close() const;
 
     TCPClient(in_addr_t, in_port_t);
 
-    ~TCPClient() override = default;
+    ~TCPClient() = default;
 };
 
 

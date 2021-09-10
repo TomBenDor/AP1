@@ -1,26 +1,26 @@
-#include "../Socket.h"
 #include <netinet/in.h>
 #include "string"
 
 #ifndef CLIENT_TCPSERVER_H
 #define CLIENT_TCPSERVER_H
 
-class TCPServer : public Socket {
+class TCPServer {
 private:
     int sockId;
     int queueLen = 5;
     struct sockaddr_in from;
-    int clientSock = 0;
 public:
     TCPServer(in_addr_t ip, in_port_t port);
 
-    void send(std::string string) override;
+    void send(int clientSock, const std::string &string);
 
-    std::string recv() override;
+    std::string recv(int clientSock);
 
-    void close() override;
+    int accept();
 
-    ~TCPServer() override = default;
+    void close() const;
+
+    ~TCPServer() = default;
 };
 
 
