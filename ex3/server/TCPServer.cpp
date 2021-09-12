@@ -23,14 +23,6 @@ TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK
     }
 }
 
-void TCPServer::send(int clientSock, const std::string &string) {
-    //Send the string through the socket
-    size_t sent_bytes = ::send(clientSock, string.c_str(), strlen(string.c_str()), 0);
-    if (sent_bytes < 0) {
-        perror("error sending to client");
-    }
-}
-
 
 int TCPServer::accept() {
     unsigned int addr_len = sizeof(this->from);
@@ -45,16 +37,4 @@ void TCPServer::close() const {
     //Close the socket
     ::close(this->sockId);
 
-}
-
-std::string TCPServer::recv(int clientSock) {
-    char buffer[4096];
-    int expected_data_len = 4096;
-    ssize_t read_bytes = ::recv(clientSock, buffer, expected_data_len, 0);
-    if (read_bytes < 0) {
-        perror("error writing to sock");
-    }
-    //Create a string and return it
-    std::string res(buffer);
-    return res;
 }

@@ -12,10 +12,6 @@ private:
 public:
     TCPServer(in_addr_t ip, in_port_t port);
 
-    void send(int clientSock, const std::string &string);
-
-    std::string recv(int clientSock);
-
     int accept();
 
     void close() const;
