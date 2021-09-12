@@ -13,11 +13,9 @@ void *handleClient(void *);
 class Config {
 public:
     std::string path;
-    TCPServer *server;
     int clientSock;
 
-    Config(std::string path, TCPServer *server, int clientSock) : path(std::move(path)), server(server),
-                                                                  clientSock(clientSock) {}
+    Config(std::string path, int clientSock) : path(std::move(path)), clientSock(clientSock) {}
 };
 
 int main(int argc, char *argv[]) {
@@ -31,7 +29,7 @@ int main(int argc, char *argv[]) {
 
         pthread_t tid;
         std::string path = argv[1];
-        Config config(path, &server, clientSock);
+        Config config(path, clientSock);
         configurations.push_back(config);
         pthread_create(&tid, nullptr, handleClient, &configurations[configurations.size() - 1]);
     }
@@ -40,14 +38,14 @@ int main(int argc, char *argv[]) {
 void *handleClient(void *c) {
     auto *config = (Config *) c;
     //Get the classified data
-    std::vector<Iris> classified = toIrisVector(readCSV(config->path));
+    std::vector<Iris> classified = toIrisVector(utils::readCSV(config->path));
     //Initialize the classifier
     KnnClassifier<Iris> knnClassifier(classified, 5);
     Classifier<Iris> *classifier = &knnClassifier;
 
-    std::string msg = config->server->recv(config->clientSock);
+    std::string msg = utils::recv(config->clientSock);
     //Get the indices of the irises
-    std::vector<std::string> indices = split(msg, '\n');
+    std::vector<std::string> indices = utils::split(msg, '\n');
     std::string types;
     //Classify each of the irises
     for (const std::string &index: indices) {
@@ -55,6 +53,6 @@ void *handleClient(void *c) {
         types.append(classifier->classify(iris));
         types.append("\n");
     }
-    config->server->send(config->clientSock, types);
+    utils::send(config->clientSock, types);
     return nullptr;
 }

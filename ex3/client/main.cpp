@@ -12,9 +12,9 @@ int main() {
     //Get parameters from user
     std::string parameters;
     std::getline(std::cin, parameters);
-    std::vector<std::string> params = split(parameters, ' ');
+    std::vector<std::string> params = utils::split(parameters, ' ');
     //Read the iris data from the csv file
-    std::vector<std::vector<std::string>> unclassified = readCSV(params[0]);
+    std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
     //Set the client according to the request
     //Split the data in order to send it
     std::string msg;
@@ -32,7 +32,7 @@ int main() {
     //Receive the calculated types
     std::string types = client.recv();
     //Write the types to the new file
-    writeCSV(params[1], split(types, '\n'));
+    utils::writeCSV(params[1], utils::split(types, '\n'));
     //Close the sockets
     client.close();
 

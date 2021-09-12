@@ -40,7 +40,7 @@ Iris::Iris(const std::vector<std::string> &v) :
 
 }
 
-Iris::Iris(const std::string &s) : Iris(split(s, ' ')) {
+Iris::Iris(const std::string &s) : Iris(utils::split(s, ' ')) {
 
 }
 

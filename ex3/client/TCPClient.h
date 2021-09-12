@@ -10,7 +10,7 @@ private:
     int sock;
     struct sockaddr_in sin;
 public:
-    void send(const std::string &);
+    void send(const std::string &) const;
 
     std::string recv() const;
 
