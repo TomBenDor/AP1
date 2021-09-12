@@ -13,11 +13,9 @@ void *handleClient(void *);
 class Config {
 public:
     std::string path;
-    TCPServer *server;
     int clientSock;
 
-    Config(std::string path, TCPServer *server, int clientSock) : path(std::move(path)), server(server),
-                                                                  clientSock(clientSock) {}
+    Config(std::string path, int clientSock) : path(std::move(path)), clientSock(clientSock) {}
 };
 
 int main(int argc, char *argv[]) {
@@ -31,7 +29,7 @@ int main(int argc, char *argv[]) {
 
         pthread_t tid;
         std::string path = argv[1];
-        Config config(path, &server, clientSock);
+        Config config(path, clientSock);
         configurations.push_back(config);
         pthread_create(&tid, nullptr, handleClient, &configurations[configurations.size() - 1]);
     }
