@@ -13,7 +13,11 @@ private:
     double petalLength, petalWidth, sepalLength, sepalWidth;
     std::string type = "None";
 public:
-    double distance(const Iris &) const override;
+    double euc_distance(const Iris &) const override;
+
+    double che_distance(const Iris &) const override;
+
+    double man_distance(const Iris &) const override;
 
     double getPetalLength() const;
 
