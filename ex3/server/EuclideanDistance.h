@@ -11,7 +11,6 @@ template<class T>
 class EuclideanDistance : public Distance<T> {
 public:
     double distance(T t1, T t2) const override {
-        std::cout << "euc" << std::endl;
         std::vector<double> t1Coordinates = t1.getVector();
         std::vector<double> t2Coordinates = t2.getVector();
         if (t2Coordinates.size() != t1Coordinates.size()) {
