@@ -1,8 +1,6 @@
 #include "Iris.h"
 #include "../utils.h"
 
-using namespace std;
-
 double Iris::getPetalLength() const {
     return petalLength;
 }
