@@ -7,17 +7,13 @@
 #include "Classifiable.h"
 
 //Iris class
-class Iris : public Classifiable<Iris> {
+class Iris : public Classifiable {
 private:
     //coordinates and type
     double petalLength, petalWidth, sepalLength, sepalWidth;
     std::string type = "None";
 public:
-    double euc_distance(const Iris &) const override;
-
-    double che_distance(const Iris &) const override;
-
-    double man_distance(const Iris &) const override;
+    std::vector<double> getVector() const override;
 
     double getPetalLength() const;
 

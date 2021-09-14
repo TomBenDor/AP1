@@ -5,6 +5,7 @@
 #include "map"
 #include "type_traits"
 #include "Classifier.h"
+#include "Distance.h"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H
@@ -17,35 +18,25 @@ private:
     std::vector<T> data;
     int k;
 
-    enum Metric {
-        euc, che, man
-    };
-    Metric metric;
+    Distance<T> *distance;
 
     //The comparator class
     class Comparator {
         //A classifiable that the class
         T compareTo;
-        Metric distance_metric;
+        Distance<T> *distance_metric;
     public:
         //Compare using distances from the classifiable
         bool operator()(const T &t1, const T &t2) {
-            switch (this->distance_metric) {
-                case euc:
-                    return compareTo.euc_distance(t1) < compareTo.euc_distance(t2);
-                case che:
-                    return compareTo.che_distance(t1) < compareTo.che_distance(t2);
-                case man:
-                    return compareTo.man_distance(t1) < compareTo.man_distance(t2);
-            }
+            return distance_metric->distance(compareTo, t1) < distance_metric->distance(compareTo, t2);
         }
 
-        explicit Comparator(T t, Metric metric) : compareTo(t), distance_metric(metric) {
+        explicit Comparator(T t, Distance<T> *distance) : compareTo(t), distance_metric(distance) {
         }
     };
 
 public:
-    explicit KnnClassifier(const std::vector<T> &data, int k) : k(k), metric(euc) {
+    explicit KnnClassifier(const std::vector<T> &data, int k, Distance<T> *metric) : k(k), distance(metric) {
         for (auto object: data) {
             this->data.push_back(object);
         }
@@ -54,7 +45,7 @@ public:
     //Classify an unclassified
     std::string classify(T &unclassified) {
         //Sort the vector and get the first k elements
-        std::sort(data.begin(), data.end(), Comparator(std::move(unclassified), this->metric));
+        std::sort(data.begin(), data.end(), Comparator(std::move(unclassified), this->distance));
         auto start = data.begin();
         auto end = data.begin() + k;
         std::vector<T> knn;
@@ -85,8 +76,8 @@ public:
         return maxType;
     }
 
-    void setMetric(Metric metric1) {
-        this->metric = metric1;
+    void setDistance(Distance<T> *newDistance) {
+        this->distance = newDistance;
     }
 
     ~KnnClassifier() = default;

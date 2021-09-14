@@ -7,7 +7,7 @@
 template<class T>
 class Classifier {
     //Assert that the generic value is a classifiable
-    static_assert(std::is_base_of<Classifiable<T>, T>::value, "T must be subclass of Classifiable!");
+    static_assert(std::is_base_of<Classifiable, T>::value, "T must be subclass of Classifiable!");
 public:
     virtual std::string classify(T &unclassified) = 0;
 
