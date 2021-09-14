@@ -7,14 +7,14 @@
 #include "Classifiable.h"
 
 //Iris class
-class Iris : public Classifiable<Iris> {
+class Iris : public Classifiable {
 private:
     //coordinates and type
     std::vector<double> coordinates;
     std::string type = "None";
     bool isClassified;
 public:
-    double distance(const Iris &) const override;
+    std::vector<double> getVector() const override;
 
     std::string getType() const override;
 

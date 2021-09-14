@@ -1,6 +1,5 @@
 #include "Iris.h"
 #include "../utils.h"
-#include <cmath>
 
 std::string Iris::getType() const {
     if (!isClassified) {
@@ -9,13 +8,11 @@ std::string Iris::getType() const {
     return type;
 }
 
-double Iris::distance(const Iris &other) const {
-    double sum = 0;
-    for (int i = 0; i < coordinates.size(); i++) {
-        sum += std::pow(coordinates[i] - other.coordinates[i], 2);
-    }
-    return std::sqrt(sum);
+
+std::vector<double> Iris::getVector() const {
+    return this->coordinates;
 }
+
 
 Iris::Iris(const std::vector<std::string> &v, bool isClassified) : isClassified(isClassified) {
     if (isClassified) {
