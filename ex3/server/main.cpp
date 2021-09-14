@@ -43,7 +43,7 @@ void *handleClient(void *c) {
     //Get the classified data
     std::vector<Iris> classified = toIrisVector(utils::readCSV(config->path));
     //Initialize the classifier
-    ManhattanDistance<Iris> euclideanDistance{};
+    ManhattanDistance<Iris> euclideanDistance;
     Distance<Iris> *distance = &euclideanDistance;
     KnnClassifier<Iris> knnClassifier(classified, 5, distance);
     Classifier<Iris> *classifier = &knnClassifier;
