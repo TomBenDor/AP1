@@ -2,52 +2,35 @@
 #include "../utils.h"
 #include <cmath>
 
-double Iris::getPetalLength() const {
-    return petalLength;
-}
-
-double Iris::getPetalWidth() const {
-    return petalWidth;
-}
-
-double Iris::getSepalLength() const {
-    return sepalLength;
-}
-
-double Iris::getSepalWidth() const {
-    return sepalWidth;
-}
-
 std::string Iris::getType() const {
     return type;
 }
 
 double Iris::distance(const Iris &other) const {
-    return std::sqrt(std::pow(this->sepalWidth - other.getSepalWidth(), 2)
-                     + std::pow(this->sepalLength - other.getSepalLength(), 2) +
-                     std::pow(this->petalLength - other.getPetalLength(), 2)
-                     + std::pow(this->petalWidth - other.getPetalWidth(), 2));
-}
-
-Iris::Iris(const std::vector<std::string> &v) :
-        sepalLength(std::stod(v[0])),
-        sepalWidth(std::stod(v[1])),
-        petalWidth(std::stod(v[2])),
-        petalLength(std::stod(v[3])) {
-    if (v.size() == 5) {
-        this->type = v.at(4);
+    double sum = 0;
+    for (int i = 0; i < coordinates.size(); i++) {
+        sum += std::pow(coordinates[i] - other.coordinates[i], 2);
     }
-
+    return std::sqrt(sum);
 }
 
-Iris::Iris(const std::string &s) : Iris(utils::split(s, ' ')) {
-
+Iris::Iris(const std::vector<std::string> &v, bool isClassified) {
+    if (isClassified) {
+        for (int i = 0; i < v.size() - 1; i++) {
+            coordinates.push_back(std::stod(v[i]));
+        }
+        type = v[v.size() - 1];
+    } else {
+        for (const auto &i: v) {
+            coordinates.push_back(std::stod(i));
+        }
+    }
 }
 
-std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data) {
+std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data, bool isClassified) {
     std::vector<Iris> result;
     for (const auto &v: data) {
-        Iris iris(v);
+        Iris iris(v, isClassified);
         result.push_back(iris);
     }
     return result;

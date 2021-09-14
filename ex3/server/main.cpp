@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 void *handleClient(void *c) {
     auto *config = (Config *) c;
     //Get the classified data
-    std::vector<Iris> classified = toIrisVector(utils::readCSV(config->path));
+    std::vector<Iris> classified = toIrisVector(utils::readCSV(config->path), true);
     //Initialize the classifier
     KnnClassifier<Iris> knnClassifier(classified, 5);
     Classifier<Iris> *classifier = &knnClassifier;
@@ -49,7 +49,7 @@ void *handleClient(void *c) {
     std::string types;
     //Classify each of the irises
     for (const std::string &index: indices) {
-        Iris iris(index);
+        Iris iris(utils::split(index, ' '), false);
         types.append(classifier->classify(iris));
         types.append("\n");
     }
