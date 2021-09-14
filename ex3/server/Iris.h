@@ -10,25 +10,16 @@
 class Iris : public Classifiable<Iris> {
 private:
     //coordinates and type
-    double petalLength, petalWidth, sepalLength, sepalWidth;
+    std::vector<double> coordinates;
     std::string type = "None";
+    bool isClassified;
 public:
     double distance(const Iris &) const override;
-
-    double getPetalLength() const;
-
-    double getPetalWidth() const;
-
-    double getSepalWidth() const;
-
-    double getSepalLength() const;
 
     std::string getType() const override;
 
     //Construct an iris using a vector with its coordinates
-    explicit Iris(const std::vector<std::string> &);
-
-    explicit Iris(const std::string &);
+    explicit Iris(const std::vector<std::string> &, bool);
 
     Iris(Iris &&o) = default;
 
@@ -40,7 +31,7 @@ public:
 };
 
 //Create a vector of irises using a matrix
-std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &);
+std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &, bool);
 
 
 #endif //AP1_IRIS_H
