@@ -12,6 +12,7 @@ private:
     //coordinates and type
     std::vector<double> coordinates;
     std::string type = "None";
+    bool isClassified;
 public:
     double distance(const Iris &) const override;
 

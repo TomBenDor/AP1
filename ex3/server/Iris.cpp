@@ -3,6 +3,9 @@
 #include <cmath>
 
 std::string Iris::getType() const {
+    if (!isClassified) {
+        perror("Iris is not classified!");
+    }
     return type;
 }
 
@@ -14,7 +17,7 @@ double Iris::distance(const Iris &other) const {
     return std::sqrt(sum);
 }
 
-Iris::Iris(const std::vector<std::string> &v, bool isClassified) {
+Iris::Iris(const std::vector<std::string> &v, bool isClassified) : isClassified(isClassified) {
     if (isClassified) {
         for (int i = 0; i < v.size() - 1; i++) {
             coordinates.push_back(std::stod(v[i]));
