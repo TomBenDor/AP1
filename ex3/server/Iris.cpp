@@ -30,7 +30,6 @@ std::vector<double> Iris::getVector() const {
     return res;
 }
 
-
 Iris::Iris(const std::vector<std::string> &v) :
         sepalLength(std::stod(v[0])),
         sepalWidth(std::stod(v[1])),
