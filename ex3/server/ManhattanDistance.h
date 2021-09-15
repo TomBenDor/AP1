@@ -2,7 +2,6 @@
 #include "vector"
 #include <cstdio>
 #include <cmath>
-#include "iostream"
 
 #ifndef CLIENT_MANHATTANDISTANCE_H
 #define CLIENT_MANHATTANDISTANCE_H
