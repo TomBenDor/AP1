@@ -1,6 +1,5 @@
 #include <utility>
 #include <vector>
-#include <iostream>
 #include "Iris.h"
 #include "../utils.h"
 #include "KnnClassifier.h"

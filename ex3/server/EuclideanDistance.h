@@ -2,7 +2,6 @@
 #include "vector"
 #include <cstdio>
 #include <cmath>
-#include "iostream"
 
 #ifndef CLIENT_EUCLIDEANDISTANCE_H
 #define CLIENT_EUCLIDEANDISTANCE_H
