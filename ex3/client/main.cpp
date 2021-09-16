@@ -21,19 +21,7 @@ void receiving(std::queue<std::string> &sending_queue, TCPClient client) {
     }
 }
 
-std::string separateVector(const std::vector<std::vector<std::string>> &vector) {
-    std::string msg;
-    for (const std::vector<std::string> &i: vector) {
-        for (const std::string &j: i) {
-            msg.append(j);
-            msg.append(" ");
-        }
-        msg.pop_back();
-        msg.append("\n");
-    }
-    msg.pop_back();
-    return msg;
-}
+
 
 int main() {
     //Crete clients
@@ -52,7 +40,7 @@ int main() {
             break;
         }
         std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
-        std::string msg = separateVector(unclassified);
+        std::string msg = utils::joinVector(unclassified);
         client.send(msg);
         std::unique_lock<std::mutex> uniqueLock(mutex);
         cv.wait(uniqueLock, [&msgQueue] { return !(msgQueue.empty()); });

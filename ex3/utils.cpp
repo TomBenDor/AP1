@@ -74,4 +74,18 @@ namespace utils {
     void close(int sock) {
         ::close(sock);
     }
+
+    std::string joinVector(const std::vector<std::vector<std::string>> &vector) {
+        std::string msg;
+        for (const std::vector<std::string> &i: vector) {
+            for (const std::string &j: i) {
+                msg.append(j);
+                msg.append(" ");
+            }
+            msg.pop_back();
+            msg.append("\n");
+        }
+        msg.pop_back();
+        return msg;
+    }
 }

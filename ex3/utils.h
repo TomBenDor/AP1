@@ -16,5 +16,7 @@ namespace utils {
     void send(int, const std::string &);
 
     void close(int sock);
+
+    std::string joinVector(const std::vector<std::vector<std::string>> &vector);
 }
 #endif //AP1_UTILS_H
