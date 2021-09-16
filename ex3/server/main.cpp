@@ -8,7 +8,7 @@
 #include "EuclideanDistance.h"
 #include "ChebyshevDistance.h"
 #include "ManhattanDistance.h"
-#include "iostream"
+
 void handleClient(const std::string &path, int clientSock);
 
 int main(int argc, char *argv[]) {

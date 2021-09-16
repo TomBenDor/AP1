@@ -49,7 +49,6 @@ int main() {
         std::vector<std::string> params = utils::split(parameters, ' ');
         if (params[0] == "exit") {
             client.send("exit");
-            std::cout << "exiting" << std::endl;
             break;
         }
         std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
