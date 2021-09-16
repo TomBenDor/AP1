@@ -13,14 +13,21 @@
 std::condition_variable cv;
 std::mutex mutex;
 
-void receiving(std::queue<std::string> &sending_queue, TCPClient client) {
+void receiving(std::queue<std::string> &receiving_queue, TCPClient client) {
     while (true) {
         std::string msg = client.recv();
-        sending_queue.push(msg);
+        receiving_queue.push(msg);
         cv.notify_one();
     }
 }
 
+std::string receiveFromServer(std::queue<std::string> &receiving_queue) {
+    std::unique_lock<std::mutex> uniqueLock(mutex);
+    cv.wait(uniqueLock, [&receiving_queue] { return !(receiving_queue.empty()); });
+    std::string res = receiving_queue.front();
+    receiving_queue.pop();
+    return res;
+}
 
 
 int main() {
@@ -42,10 +49,7 @@ int main() {
         std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
         std::string msg = utils::joinVector(unclassified);
         client.send(msg);
-        std::unique_lock<std::mutex> uniqueLock(mutex);
-        cv.wait(uniqueLock, [&msgQueue] { return !(msgQueue.empty()); });
-        std::string types = msgQueue.front();
-        msgQueue.pop();
+        std::string types = receiveFromServer(msgQueue);
         utils::writeCSV(params[1], utils::split(types, '\n'));
     }
     client.close();
