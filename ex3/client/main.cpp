@@ -53,6 +53,5 @@ int main() {
         utils::writeCSV(params[1], utils::split(types, '\n'));
     }
     client.close();
-    cv.notify_one();
     return 0;
 }
