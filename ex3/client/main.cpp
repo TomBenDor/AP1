@@ -5,20 +5,25 @@
 #include "vector"
 #include "../utils.h"
 #include "TCPClient.h"
+#include "thread"
+#include "queue"
+#include "mutex"
+#include "condition_variable"
 
-int main() {
-    //Crete clients
-    TCPClient client(inet_addr("127.0.0.1"), htons(55555));
-    //Get parameters from user
-    std::string parameters;
-    std::getline(std::cin, parameters);
-    std::vector<std::string> params = utils::split(parameters, ' ');
-    //Read the iris data from the csv file
-    std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
-    //Set the client according to the request
-    //Split the data in order to send it
+std::condition_variable cv;
+std::mutex mutex;
+
+void receiving(std::queue<std::string> &sending_queue, TCPClient client) {
+    while (true) {
+        std::string msg = client.recv();
+        sending_queue.push(msg);
+        cv.notify_one();
+    }
+}
+
+std::string separateVector(const std::vector<std::vector<std::string>> &vector) {
     std::string msg;
-    for (const std::vector<std::string> &i: unclassified) {
+    for (const std::vector<std::string> &i: vector) {
         for (const std::string &j: i) {
             msg.append(j);
             msg.append(" ");
@@ -27,14 +32,36 @@ int main() {
         msg.append("\n");
     }
     msg.pop_back();
-    //Send the message
-    client.send(msg);
-    //Receive the calculated types
-    std::string types = client.recv();
-    //Write the types to the new file
-    utils::writeCSV(params[1], utils::split(types, '\n'));
-    //Close the sockets
-    client.close();
+    return msg;
+}
 
+int main() {
+    //Crete clients
+    TCPClient client(inet_addr("127.0.0.1"), htons(55555));
+    //Get parameters from user
+    std::string parameters;
+    std::queue<std::string> msgQueue;
+    std::thread receivingThread(receiving, std::ref(msgQueue), client);
+    receivingThread.detach();
+    //Read the iris data from the csv file
+    while (true) {
+        std::getline(std::cin, parameters);
+        std::vector<std::string> params = utils::split(parameters, ' ');
+        if (params[0] == "exit") {
+            client.send("exit");
+            std::cout << "exiting" << std::endl;
+            break;
+        }
+        std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
+        std::string msg = separateVector(unclassified);
+        client.send(msg);
+        std::unique_lock<std::mutex> uniqueLock(mutex);
+        cv.wait(uniqueLock, [&msgQueue] { return !(msgQueue.empty()); });
+        std::string types = msgQueue.front();
+        msgQueue.pop();
+        utils::writeCSV(params[1], utils::split(types, '\n'));
+    }
+    client.close();
+    cv.notify_one();
     return 0;
 }

@@ -14,5 +14,7 @@ namespace utils {
     std::string recv(int);
 
     void send(int, const std::string &);
+
+    void close(int sock);
 }
 #endif //AP1_UTILS_H

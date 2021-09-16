@@ -3,6 +3,8 @@
 #include "utils.h"
 #include <netinet/in.h>
 #include <cstring>
+#include <unistd.h>
+#include "iostream"
 
 namespace utils {
 //Read a csv file and return a matrix of its lines
@@ -56,14 +58,21 @@ namespace utils {
         }
         //Create a string and return it
         std::string res(buffer);
+        std::string delimiter = "end";
+        res = res.substr(0, res.find(delimiter));
         return res;
     }
 
     void send(int sock, const std::string &string) {
+        std::string msg = string + "end";
         //Send the string through the socket
-        size_t sent_bytes = ::send(sock, string.c_str(), strlen(string.c_str()), 0);
+        size_t sent_bytes = ::send(sock, msg.c_str(), strlen(msg.c_str()) + 1, 0);
         if (sent_bytes < 0) {
             perror("error sending to client");
         }
+    }
+
+    void close(int sock) {
+        ::close(sock);
     }
 }
