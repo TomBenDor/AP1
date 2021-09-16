@@ -6,8 +6,6 @@
 #include "TCPServer.h"
 #include "thread"
 #include "EuclideanDistance.h"
-#include "ChebyshevDistance.h"
-#include "ManhattanDistance.h"
 
 void handleClient(const std::string &path, int clientSock);
 
@@ -27,7 +25,7 @@ void handleClient(const std::string &path, int clientSock) {
     //Get the classified data
     std::vector<Iris> classified = toIrisVector(utils::readCSV(path), true);
     //Initialize the classifier
-    ManhattanDistance<Iris> euclideanDistance;
+    EuclideanDistance<Iris> euclideanDistance;
     Distance<Iris> *distance = &euclideanDistance;
     KnnClassifier<Iris> knnClassifier(classified, 5, distance);
     Classifier<Iris> *classifier = &knnClassifier;
