@@ -65,7 +65,7 @@ namespace utils {
     void send(int sock, const std::string &string) {
         std::string msg = string + "end";
         //Send the string through the socket
-        size_t sent_bytes = ::send(sock, msg.c_str(), strlen(msg.c_str()) + 1, 0);
+        size_t sent_bytes = ::send(sock, msg.c_str(), strlen(msg.c_str()), 0);
         if (sent_bytes < 0) {
             perror("error sending to client");
         }
