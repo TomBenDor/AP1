@@ -5,36 +5,41 @@
 #include "vector"
 #include "../utils.h"
 #include "TCPClient.h"
+#include "thread"
+
+void handleMessage(const std::string &path, const std::string &msg) {
+    utils::writeCSV(path, utils::split(msg, '\n'));
+}
+
+void receiving(TCPClient client, std::string &path) {
+    while (true) {
+        std::string msg = client.recv();
+        handleMessage(path, msg);
+    }
+}
+
 
 int main() {
     //Crete clients
     TCPClient client(inet_addr("127.0.0.1"), htons(55555));
     //Get parameters from user
     std::string parameters;
-    std::getline(std::cin, parameters);
-    std::vector<std::string> params = utils::split(parameters, ' ');
+    std::string path;
+    std::thread receivingThread(receiving, client, std::ref(path));
+    receivingThread.detach();
     //Read the iris data from the csv file
-    std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
-    //Set the client according to the request
-    //Split the data in order to send it
-    std::string msg;
-    for (const std::vector<std::string> &i: unclassified) {
-        for (const std::string &j: i) {
-            msg.append(j);
-            msg.append(" ");
+    while (true) {
+        std::getline(std::cin, parameters);
+        std::vector<std::string> params = utils::split(parameters, ' ');
+        if (params[0] == "exit") {
+            client.send("exit");
+            break;
         }
-        msg.pop_back();
-        msg.append("\n");
+        path = params[1];
+        std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
+        std::string msg = utils::joinVector(unclassified);
+        client.send(msg);
     }
-    msg.pop_back();
-    //Send the message
-    client.send(msg);
-    //Receive the calculated types
-    std::string types = client.recv();
-    //Write the types to the new file
-    utils::writeCSV(params[1], utils::split(types, '\n'));
-    //Close the sockets
     client.close();
-
     return 0;
 }

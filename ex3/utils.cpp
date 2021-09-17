@@ -56,14 +56,32 @@ namespace utils {
         }
         //Create a string and return it
         std::string res(buffer);
+        std::string delimiter = "end";
+        res = res.substr(0, res.find(delimiter));
         return res;
     }
 
     void send(int sock, const std::string &string) {
+        std::string msg = string + "end";
         //Send the string through the socket
-        size_t sent_bytes = ::send(sock, string.c_str(), strlen(string.c_str()), 0);
+        size_t sent_bytes = ::send(sock, msg.c_str(), strlen(msg.c_str()), 0);
         if (sent_bytes < 0) {
             perror("error sending to client");
         }
+    }
+
+
+    std::string joinVector(const std::vector<std::vector<std::string>> &vector) {
+        std::string msg;
+        for (const std::vector<std::string> &i: vector) {
+            for (const std::string &j: i) {
+                msg.append(j);
+                msg.append(" ");
+            }
+            msg.pop_back();
+            msg.append("\n");
+        }
+        msg.pop_back();
+        return msg;
     }
 }

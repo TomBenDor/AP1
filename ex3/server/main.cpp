@@ -6,6 +6,7 @@
 #include "TCPServer.h"
 #include "thread"
 #include "EuclideanDistance.h"
+#include <unistd.h>
 
 void handleClient(const std::string &path, int clientSock);
 
@@ -29,16 +30,21 @@ void handleClient(const std::string &path, int clientSock) {
     Distance<Iris> *distance = &euclideanDistance;
     KnnClassifier<Iris> knnClassifier(classified, 5, distance);
     Classifier<Iris> *classifier = &knnClassifier;
-
-    std::string msg = utils::recv(clientSock);
-    //Get the indices of the irises
-    std::vector<std::string> indices = utils::split(msg, '\n');
-    std::string types;
-    //Classify each of the irises
-    for (const std::string &index: indices) {
-        Iris iris(utils::split(index, ' '), false);
-        types.append(classifier->classify(iris));
-        types.append("\n");
+    while (true) {
+        std::string msg = utils::recv(clientSock);
+        if (msg == "exit") {
+            break;
+        }
+        //Get the indices of the irises
+        std::vector<std::string> indices = utils::split(msg, '\n');
+        std::string types;
+        //Classify each of the irises
+        for (const std::string &index: indices) {
+            Iris iris(utils::split(index, ' '), false);
+            types.append(classifier->classify(iris));
+            types.append("\n");
+        }
+        utils::send(clientSock, types);
     }
-    utils::send(clientSock, types);
+    close(clientSock);
 }
