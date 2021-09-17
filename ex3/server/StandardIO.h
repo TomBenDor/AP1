@@ -9,7 +9,6 @@ public:
     void write(std::string string) override;
 
     std::string read() override;
-
 };
 
 
