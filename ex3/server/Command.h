@@ -9,7 +9,9 @@ private:
     std::string description;
     DefaultIO *io;
 public:
-    virtual std::string getDescription() = 0;
+    virtual std::string getDescription();
+
+    virtual DefaultIO *getDefaultIO();
 
     virtual void execute() = 0;
 
