@@ -7,11 +7,13 @@
 class Command {
 private:
     std::string description;
-    DefaultIO io;
+    DefaultIO *io;
 public:
     virtual std::string getDescription() = 0;
 
     virtual void execute() = 0;
+
+    Command(std::string description, DefaultIO *io);
 
 };
 
