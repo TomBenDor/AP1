@@ -13,7 +13,7 @@ public:
 
     virtual void execute() = 0;
 
-    Command(const std::string &description, DefaultIO *io);
+    Command(std::string description, DefaultIO *io);
 };
 
 
