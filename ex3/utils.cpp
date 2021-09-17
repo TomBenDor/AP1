@@ -3,7 +3,6 @@
 #include "utils.h"
 #include <netinet/in.h>
 #include <cstring>
-#include <unistd.h>
 
 namespace utils {
 //Read a csv file and return a matrix of its lines
@@ -71,9 +70,6 @@ namespace utils {
         }
     }
 
-    void close(int sock) {
-        ::close(sock);
-    }
 
     std::string joinVector(const std::vector<std::vector<std::string>> &vector) {
         std::string msg;

@@ -8,6 +8,7 @@
 #include "EuclideanDistance.h"
 #include "ChebyshevDistance.h"
 #include "ManhattanDistance.h"
+#include <unistd.h>
 
 void handleClient(const std::string &path, int clientSock);
 
@@ -47,5 +48,5 @@ void handleClient(const std::string &path, int clientSock) {
         }
         utils::send(clientSock, types);
     }
-    utils::close(clientSock);
+    close(clientSock);
 }
