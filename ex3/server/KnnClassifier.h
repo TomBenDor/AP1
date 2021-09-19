@@ -13,6 +13,7 @@
 //KnnClassifier
 template<class T>
 class KnnClassifier {
+    static_assert(std::is_base_of<Classifiable, T>::value, "T must be subclass of Classifiable!");
 private:
     //The list of the classifiables to use in the algorithm
     std::vector<T> data;
