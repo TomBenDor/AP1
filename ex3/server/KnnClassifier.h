@@ -6,6 +6,7 @@
 #include "type_traits"
 #include "Classifier.h"
 #include "Distance.h"
+#include "string"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H
@@ -78,6 +79,11 @@ public:
 
     void setDistance(Distance<T> *newDistance) {
         this->distance = newDistance;
+    }
+
+    std::string toString() const override {
+        return "The current KNN parameters are: K = " + std::to_string(this->k) + ", distance metric = " +
+               this->distance->toString();
     }
 
     ~KnnClassifier() = default;

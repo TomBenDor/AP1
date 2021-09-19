@@ -11,6 +11,8 @@ class Classifier {
 public:
     virtual std::string classify(T &unclassified) = 0;
 
+    virtual std::string toString() const = 0;
+
     virtual ~Classifier() = default;
 };
 
