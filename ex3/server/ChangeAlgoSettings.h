@@ -41,19 +41,16 @@ public:
             return;
         }
         Distance<T> *newDistance;
-        ChebyshevDistance<T> chebyshevDistance;
-        ManhattanDistance<T> manhattanDistance;
-        EuclideanDistance<T> euclideanDistance;
         std::string inputDistance = parameters[1];
         std::transform(inputDistance.begin(), inputDistance.end(), inputDistance.begin(),
                        [](unsigned char c) { return std::tolower(c); });
         this->getDefaultIO()->write(inputDistance);
         if (inputDistance == "che") {
-            newDistance = &chebyshevDistance;
+            newDistance = new ChebyshevDistance<T>;
         } else if (inputDistance == "man") {
-            newDistance = &manhattanDistance;
+            newDistance = new ManhattanDistance<T>;
         } else if (inputDistance == "euc") {
-            newDistance = &euclideanDistance;
+            newDistance = new EuclideanDistance<T>;
         } else {
             this->getDefaultIO()->write("Invalid distance metric");
             return;

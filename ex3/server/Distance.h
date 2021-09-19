@@ -10,6 +10,8 @@ public:
     virtual double distance(T t1, T t2) const = 0;
 
     virtual std::string toString() const = 0;
+
+    virtual ~Distance() = default;
 };
 
 

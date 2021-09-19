@@ -81,6 +81,10 @@ public:
         this->distance = newDistance;
     }
 
+    Distance<T> *getDistance() {
+        return this->distance;
+    }
+
     void setK(int newK) {
         this->k = newK;
     }
