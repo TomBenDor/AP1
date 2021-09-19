@@ -4,7 +4,6 @@
 #include "string"
 #include "map"
 #include "type_traits"
-#include "Classifier.h"
 #include "Distance.h"
 #include "string"
 
@@ -13,7 +12,7 @@
 
 //KnnClassifier
 template<class T>
-class KnnClassifier : public Classifier<T> {
+class KnnClassifier {
 private:
     //The list of the classifiables to use in the algorithm
     std::vector<T> data;
@@ -81,7 +80,11 @@ public:
         this->distance = newDistance;
     }
 
-    std::string toString() const override {
+    void setK(int newK) {
+        this->k = newK;
+    }
+
+    std::string toString() const {
         return "The current KNN parameters are: K = " + std::to_string(this->k) + ", distance metric = " +
                this->distance->toString();
     }
