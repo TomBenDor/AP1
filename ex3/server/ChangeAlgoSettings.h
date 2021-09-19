@@ -5,12 +5,13 @@
 #include "ChebyshevDistance.h"
 #include "EuclideanDistance.h"
 #include "ManhattanDistance.h"
+#include "algorithm"
 
 #ifndef CLIENT_CHANGEALGOSETTINGS_H
 #define CLIENT_CHANGEALGOSETTINGS_H
 
 template<class T>
-class changeAlgoSettings : public Command {
+class ChangeAlgoSettings : public Command {
 private:
     KnnClassifier<T> *algo;
 public:
@@ -44,11 +45,14 @@ public:
         ManhattanDistance<T> manhattanDistance;
         EuclideanDistance<T> euclideanDistance;
         std::string inputDistance = parameters[1];
-        if (inputDistance == "CHE" || inputDistance == "che") {
+        std::transform(inputDistance.begin(), inputDistance.end(), inputDistance.begin(),
+                       [](unsigned char c) { return std::tolower(c); });
+        this->getDefaultIO()->write(inputDistance);
+        if (inputDistance == "che") {
             newDistance = &chebyshevDistance;
-        } else if (inputDistance == "MAN" || inputDistance == "man") {
+        } else if (inputDistance == "man") {
             newDistance = &manhattanDistance;
-        } else if (inputDistance == "EUC" || inputDistance == "euc") {
+        } else if (inputDistance == "euc") {
             newDistance = &euclideanDistance;
         } else {
             this->getDefaultIO()->write("Invalid distance metric");
@@ -59,7 +63,7 @@ public:
         this->getDefaultIO()->write(this->algo->toString());
     }
 
-    explicit changeAlgoSettings(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
+    explicit ChangeAlgoSettings(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
                                                                                algo(classifier) {}
 };
 

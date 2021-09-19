@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(Server server/main.cpp server/KnnClassifier.h server/Classifiable.h server/Iris.h
         server/Iris.cpp utils.h utils.cpp server/TCPServer.cpp server/TCPServer.h server/Distance.h
         server/EuclideanDistance.h server/ChebyshevDistance.h server/ManhattanDistance.h server/Command.h
-        server/DefaultIO.h server/Command.cpp server/StandardIO.cpp server/StandardIO.h server/changeAlgoSettings.h
+        server/DefaultIO.h server/Command.cpp server/StandardIO.cpp server/StandardIO.h server/ChangeAlgoSettings.h
         )
 add_executable(Client client/main.cpp utils.h utils.cpp client/TCPClient.cpp
         client/TCPClient.h)
