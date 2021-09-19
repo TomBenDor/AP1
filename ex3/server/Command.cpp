@@ -10,3 +10,7 @@ DefaultIO *Command::getDefaultIO() {
 std::string Command::getDescription() {
     return this->description;
 }
+
+std::string Command::getDescription() {
+    return this->description;
+}
