@@ -4,7 +4,6 @@
 #include "string"
 #include "map"
 #include "type_traits"
-#include "Classifier.h"
 #include "Distance.h"
 
 #ifndef AP1_KNNCLASSIFIER_H
@@ -12,7 +11,8 @@
 
 //KnnClassifier
 template<class T>
-class KnnClassifier : public Classifier<T> {
+class KnnClassifier {
+    static_assert(std::is_base_of<Classifiable, T>::value, "T must be subclass of Classifiable!");
 private:
     //The list of the classifiables to use in the algorithm
     std::vector<T> data;
