@@ -5,15 +5,25 @@
 
 void UploadUnclassified::execute() {
     this->getDefaultIO()->write("Please upload your local train csv file");
-    std::string path = this->getDefaultIO()->read();
-    std::vector<std::vector<std::string>> file = utils::readCSV(path);
-    *this->trainIrises = toIrisVector(file, false);
+    std::string input = this->getDefaultIO()->read();
+    std::vector<std::string> irises = utils::split(input, '\n');
+    std::vector<std::vector<std::string>> trainIrisCoordinates;
+    for (const std::string &stringCoordinates: irises) {
+        std::vector<std::string> coordinates = utils::split(stringCoordinates, ' ');
+        trainIrisCoordinates.push_back(coordinates);
+    }
+    *this->trainIrises = toIrisVector(trainIrisCoordinates, true);
     this->getDefaultIO()->write("Upload Complete");
 
     this->getDefaultIO()->write("Please upload your local test csv file");
-    path = this->getDefaultIO()->read();
-    file = utils::readCSV(path);
-    *this->testIrises = toIrisVector(file, false);
+    input = this->getDefaultIO()->read();
+    irises = utils::split(input, '\n');
+    std::vector<std::vector<std::string>> testIrisCoordinates;
+    for (const std::string &stringCoordinates: irises) {
+        std::vector<std::string> coordinates = utils::split(stringCoordinates, ' ');
+        testIrisCoordinates.push_back(coordinates);
+    }
+    *this->testIrises = toIrisVector(testIrisCoordinates, true);
     this->getDefaultIO()->write("Upload Complete");
 }
 
