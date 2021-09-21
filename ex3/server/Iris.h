@@ -33,5 +33,7 @@ public:
 //Create a vector of irises using a matrix
 std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &, bool);
 
+std::vector<Iris> stringToIrisVector(const std::string &, bool);
+
 
 #endif //AP1_IRIS_H

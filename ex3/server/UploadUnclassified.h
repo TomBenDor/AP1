@@ -13,7 +13,7 @@ private:
 public:
     void execute() override;
 
-    explicit UploadUnclassified(DefaultIO *io, std::vector<Iris> *testIrises, std::vector<Iris> *trainIrises);
+    explicit UploadUnclassified(DefaultIO *io, std::vector<Iris> *trainIrises, std::vector<Iris> *testIrises);
 };
 
 

@@ -1,4 +1,5 @@
 #include "Iris.h"
+#include "vector"
 #include "../utils.h"
 
 std::string Iris::getType() const {
@@ -34,4 +35,14 @@ std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data
         result.push_back(iris);
     }
     return result;
+}
+
+std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassified) {
+    std::vector<std::string> irises = utils::split(encoding, '\n');
+    std::vector<std::vector<std::string>> coordinates;
+    for (const std::string &stringCoordinates: irises) {
+        std::vector<std::string> irisCoordinates = utils::split(stringCoordinates, ' ');
+        coordinates.push_back(irisCoordinates);
+    }
+    return toIrisVector(coordinates, isClassified);
 }
