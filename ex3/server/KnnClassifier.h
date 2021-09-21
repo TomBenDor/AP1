@@ -6,6 +6,7 @@
 #include "type_traits"
 #include "Distance.h"
 #include "string"
+#include "EuclideanDistance.h"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H
@@ -17,9 +18,9 @@ class KnnClassifier {
 private:
     //The list of the classifiables to use in the algorithm
     std::vector<T> data;
-    int k;
+    int k = 5;
 
-    Distance<T> *distance;
+    Distance<T> *distance = new EuclideanDistance<T>;
 
     //The comparator class
     class Comparator {
@@ -37,14 +38,12 @@ private:
     };
 
 public:
-    explicit KnnClassifier(const std::vector<T> &data, int k, Distance<T> *metric) : k(k), distance(metric) {
-        for (auto object: data) {
-            this->data.push_back(object);
-        }
-    }
-
     //Classify an unclassified
     std::string classify(T &unclassified) {
+        if (data.empty()) {
+            perror("Data is empty!");
+        }
+
         //Sort the vector and get the first k elements
         std::sort(data.begin(), data.end(), Comparator(std::move(unclassified), this->distance));
         auto start = data.begin();
@@ -77,7 +76,14 @@ public:
         return maxType;
     }
 
+    void setData(const std::vector<T> &d) {
+        for (auto object: d) {
+            this->data.push_back(object);
+        }
+    }
+
     void setDistance(Distance<T> *newDistance) {
+        delete distance;
         this->distance = newDistance;
     }
 
@@ -90,11 +96,15 @@ public:
     }
 
     std::string toString() const {
-        return "The current KNN parameters are: K = " + std::to_string(this->k) + ", distance metric = " +
-               this->distance->toString();
+        return "The current KNN parameters are: K = " + std::to_string(k) + ", distance metric = " +
+               distance->toString();
     }
 
-    ~KnnClassifier() = default;
+    ~KnnClassifier() {
+        delete distance;
+    }
+
+    KnnClassifier() = default;
 
     KnnClassifier(KnnClassifier &&o) noexcept = default;
 

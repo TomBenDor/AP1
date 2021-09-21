@@ -25,9 +25,8 @@ void handleClient(const std::string &path, int clientSock) {
     //Get the classified data
     std::vector<Iris> classified = toIrisVector(utils::readCSV(path), true);
     //Initialize the classifier
-    EuclideanDistance<Iris> euclideanDistance;
-    Distance<Iris> *distance = &euclideanDistance;
-    KnnClassifier<Iris> knnClassifier(classified, 5, distance);
+    KnnClassifier<Iris> knnClassifier;
+    knnClassifier.setData(classified);
     while (true) {
         std::string msg = utils::recv(clientSock);
         if (msg == "exit") {
