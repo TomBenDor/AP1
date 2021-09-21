@@ -2,7 +2,6 @@
 #include "Iris.h"
 #include "../utils.h"
 #include "KnnClassifier.h"
-#include "Classifier.h"
 #include "TCPServer.h"
 #include "thread"
 #include "EuclideanDistance.h"
@@ -26,10 +25,8 @@ void handleClient(const std::string &path, int clientSock) {
     //Get the classified data
     std::vector<Iris> classified = toIrisVector(utils::readCSV(path), true);
     //Initialize the classifier
-    EuclideanDistance<Iris> euclideanDistance;
-    Distance<Iris> *distance = &euclideanDistance;
-    KnnClassifier<Iris> knnClassifier(classified, 5, distance);
-    Classifier<Iris> *classifier = &knnClassifier;
+    KnnClassifier<Iris> knnClassifier;
+    knnClassifier.setData(classified);
     while (true) {
         std::string msg = utils::recv(clientSock);
         if (msg == "exit") {
@@ -41,7 +38,7 @@ void handleClient(const std::string &path, int clientSock) {
         //Classify each of the irises
         for (const std::string &index: indices) {
             Iris iris(utils::split(index, ' '), false);
-            types.append(classifier->classify(iris));
+            types.append(knnClassifier.classify(iris));
             types.append("\n");
         }
         utils::send(clientSock, types);

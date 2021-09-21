@@ -1,3 +1,4 @@
+#include "vector"
 #ifndef AP1_CLASSIFIABLE_H
 #define AP1_CLASSIFIABLE_H
 

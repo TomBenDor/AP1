@@ -25,6 +25,10 @@ public:
         res = std::pow(res, 0.5);
         return res;
     }
+
+    std::string toString() const override {
+        return "EUC";
+    }
 };
 
 
