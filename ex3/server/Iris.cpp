@@ -38,11 +38,11 @@ std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data
 }
 
 std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassified) {
-    std::vector<std::string> irises = utils::split(encoding, '\n');
-    std::vector<std::vector<std::string>> coordinates;
-    for (const std::string &stringCoordinates: irises) {
-        std::vector<std::string> irisCoordinates = utils::split(stringCoordinates, ' ');
-        coordinates.push_back(irisCoordinates);
+    std::vector<std::string> irisesEncodings = utils::split(encoding, '\n');
+    std::vector<Iris> irises;
+    for (const std::string &coordinatesEncoding: irisesEncodings) {
+        std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ' ');
+        irises.emplace_back(coordinates, isClassified);
     }
-    return toIrisVector(coordinates, isClassified);
+    return irises;
 }
