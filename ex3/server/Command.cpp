@@ -2,7 +2,6 @@
 
 Command::Command(std::string description, DefaultIO *io) : io(io), description(std::move(description)) {}
 
-
 DefaultIO *Command::getDefaultIO() {
     return this->io;
 }
