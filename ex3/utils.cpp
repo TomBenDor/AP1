@@ -5,17 +5,22 @@
 #include <cstring>
 
 namespace utils {
-    // Read a csv file and return a matrix of its lines
-    std::vector<std::vector<std::string>> readCSV(const std::string &path) {
+    std::string readFile(const std::string &path) {
         std::ifstream fin(path);
-
         if (!fin.is_open()) throw std::runtime_error("Could not open file");
 
-        std::vector<std::vector<std::string>> data;
-        std::string line;
+        std::stringstream out;
+        out << fin.rdbuf();
+        return out.str();
+    }
 
-        while (fin.good()) {
-            std::getline(fin, line);
+    // Read a csv file and return a matrix of its lines
+    std::vector<std::vector<std::string>> readCSV(const std::string &path) {
+        std::string csv = readFile(path);
+
+        std::vector<std::vector<std::string>> data;
+
+        for (const auto &line: split(csv, '\n')) {
             std::stringstream ss(line);
 
             std::vector<std::string> row = split(line, ',');
@@ -68,20 +73,5 @@ namespace utils {
         if (sent_bytes < 0) {
             perror("error sending to client");
         }
-    }
-
-
-    std::string joinVector(const std::vector<std::vector<std::string>> &vector) {
-        std::string msg;
-        for (const std::vector<std::string> &i: vector) {
-            for (const std::string &j: i) {
-                msg.append(j);
-                msg.append(",");
-            }
-            msg.pop_back();
-            msg.append("\n");
-        }
-        msg.pop_back();
-        return msg;
     }
 }
