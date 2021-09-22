@@ -21,6 +21,8 @@ public:
     //Construct an iris using a vector with its coordinates
     explicit Iris(const std::vector<std::string> &, bool);
 
+    explicit Iris(const Iris &, std::string);
+
     Iris(Iris &&o) = default;
 
     Iris(const Iris &o) = default;

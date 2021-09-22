@@ -1,4 +1,6 @@
 #include "Iris.h"
+
+#include <utility>
 #include "vector"
 #include "../utils.h"
 
@@ -27,6 +29,11 @@ Iris::Iris(const std::vector<std::string> &v, bool isClassified) : isClassified(
         }
     }
 }
+
+Iris::Iris(const Iris &unclassified, std::string classification) : coordinates(unclassified.getVector()),
+                                                                   type(std::move(classification)),
+                                                                   isClassified(true) {}
+
 
 std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data, bool isClassified) {
     std::vector<Iris> result;
