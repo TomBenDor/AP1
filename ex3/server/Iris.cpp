@@ -41,7 +41,7 @@ std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassif
     std::vector<std::string> irisesEncodings = utils::split(encoding, '\n');
     std::vector<Iris> irises;
     for (const std::string &coordinatesEncoding: irisesEncodings) {
-        std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ' ');
+        std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ',');
         irises.emplace_back(coordinates, isClassified);
     }
     return irises;

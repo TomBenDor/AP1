@@ -1,17 +1,17 @@
 #include "Command.h"
-#include "KnnClassifier.h"
-#include "../utils.h"
+#include "../KnnClassifier.h"
+#include "../../utils.h"
 #include "stdexcept"
-#include "ChebyshevDistance.h"
-#include "EuclideanDistance.h"
-#include "ManhattanDistance.h"
+#include "../metrics/ChebyshevDistance.h"
+#include "../metrics/EuclideanDistance.h"
+#include "../metrics/ManhattanDistance.h"
 #include "algorithm"
 
 #ifndef CLIENT_CHANGEALGOSETTINGS_H
 #define CLIENT_CHANGEALGOSETTINGS_H
 
 template<class T>
-class ChangeAlgoSettings : public Command {
+class ChangeAlgoSettingsCommand : public Command {
 private:
     KnnClassifier<T> *algo;
 public:
@@ -22,7 +22,7 @@ public:
             this->getDefaultIO()->write(this->algo->toString());
             return;
         }
-        std::vector<std::string> parameters = utils::split(input, ' ');
+        std::vector<std::string> parameters = utils::split(input, ',');
         if (parameters.size() != 2) {
             this->getDefaultIO()->write("Expected 2 parameters");
             return;
@@ -60,8 +60,8 @@ public:
         this->getDefaultIO()->write(this->algo->toString());
     }
 
-    explicit ChangeAlgoSettings(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
-                                                                               algo(classifier) {}
+    explicit ChangeAlgoSettingsCommand(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
+                                                                                      algo(classifier) {}
 };
 
 

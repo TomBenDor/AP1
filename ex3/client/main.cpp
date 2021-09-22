@@ -36,9 +36,7 @@ int main() {
             break;
         }
         path = params[1];
-        std::vector<std::vector<std::string>> unclassified = utils::readCSV(params[0]);
-        std::string msg = utils::joinVector(unclassified);
-        client.send(msg);
+        client.send(utils::readFile(params[0]));
     }
     client.close();
     return 0;
