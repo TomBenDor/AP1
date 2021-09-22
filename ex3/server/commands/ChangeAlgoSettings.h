@@ -1,10 +1,10 @@
 #include "Command.h"
-#include "KnnClassifier.h"
-#include "../utils.h"
+#include "../KnnClassifier.h"
+#include "../../utils.h"
 #include "stdexcept"
-#include "ChebyshevDistance.h"
-#include "EuclideanDistance.h"
-#include "ManhattanDistance.h"
+#include "../metrics/ChebyshevDistance.h"
+#include "../metrics/EuclideanDistance.h"
+#include "../metrics/ManhattanDistance.h"
 #include "algorithm"
 
 #ifndef CLIENT_CHANGEALGOSETTINGS_H
@@ -22,7 +22,7 @@ public:
             this->getDefaultIO()->write(this->algo->toString());
             return;
         }
-        std::vector<std::string> parameters = utils::split(input, ' ');
+        std::vector<std::string> parameters = utils::split(input, ',');
         if (parameters.size() != 2) {
             this->getDefaultIO()->write("Expected 2 parameters");
             return;

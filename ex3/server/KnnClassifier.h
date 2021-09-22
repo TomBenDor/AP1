@@ -4,9 +4,9 @@
 #include "string"
 #include "map"
 #include "type_traits"
-#include "Distance.h"
+#include "metrics/Distance.h"
 #include "string"
-#include "EuclideanDistance.h"
+#include "metrics/EuclideanDistance.h"
 
 #ifndef AP1_KNNCLASSIFIER_H
 #define AP1_KNNCLASSIFIER_H

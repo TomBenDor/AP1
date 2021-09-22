@@ -4,7 +4,6 @@
 #include "KnnClassifier.h"
 #include "TCPServer.h"
 #include "thread"
-#include "EuclideanDistance.h"
 #include <unistd.h>
 
 void handleClient(const std::string &path, int clientSock);
@@ -37,7 +36,7 @@ void handleClient(const std::string &path, int clientSock) {
         std::string types;
         //Classify each of the irises
         for (const std::string &index: indices) {
-            Iris iris(utils::split(index, ' '), false);
+            Iris iris(utils::split(index, ','), false);
             types.append(knnClassifier.classify(iris));
             types.append("\n");
         }

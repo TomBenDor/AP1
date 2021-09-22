@@ -5,7 +5,7 @@
 #include <cstring>
 
 namespace utils {
-//Read a csv file and return a matrix of its lines
+    // Read a csv file and return a matrix of its lines
     std::vector<std::vector<std::string>> readCSV(const std::string &path) {
         std::ifstream fin(path);
 
@@ -26,7 +26,7 @@ namespace utils {
         return data;
     }
 
-//Write to a csv file
+    // Write to a csv file
     void writeCSV(const std::string &path, const std::vector<std::string> &data) {
         std::ofstream fout(path);
 
@@ -76,7 +76,7 @@ namespace utils {
         for (const std::vector<std::string> &i: vector) {
             for (const std::string &j: i) {
                 msg.append(j);
-                msg.append(" ");
+                msg.append(",");
             }
             msg.pop_back();
             msg.append("\n");
