@@ -1,9 +1,9 @@
-#include "UploadUnclassified.h"
+#include "UploadUnclassifiedCommand.h"
 #include "vector"
 #include "../../utils.h"
 
 
-void UploadUnclassified::execute() {
+void UploadUnclassifiedCommand::execute() {
     this->getDefaultIO()->write("Please upload your local train csv file");
     std::string input = this->getDefaultIO()->read();
     *this->trainIrises = stringToIrisVector(input, true);
@@ -15,5 +15,6 @@ void UploadUnclassified::execute() {
     this->getDefaultIO()->write("Upload Complete");
 }
 
-UploadUnclassified::UploadUnclassified(DefaultIO *io, std::vector<Iris> *testIrises, std::vector<Iris> *trainIrises) :
+UploadUnclassifiedCommand::UploadUnclassifiedCommand(DefaultIO *io, std::vector<Iris> *testIrises,
+                                                     std::vector<Iris> *trainIrises) :
         Command("upload an unclassified csv data file", io), testIrises(testIrises), trainIrises(trainIrises) {}

@@ -11,7 +11,7 @@
 #define CLIENT_CHANGEALGOSETTINGS_H
 
 template<class T>
-class ChangeAlgoSettings : public Command {
+class ChangeAlgoSettingsCommand : public Command {
 private:
     KnnClassifier<T> *algo;
 public:
@@ -60,8 +60,8 @@ public:
         this->getDefaultIO()->write(this->algo->toString());
     }
 
-    explicit ChangeAlgoSettings(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
-                                                                               algo(classifier) {}
+    explicit ChangeAlgoSettingsCommand(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
+                                                                                      algo(classifier) {}
 };
 
 

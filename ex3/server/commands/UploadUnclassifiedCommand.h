@@ -6,14 +6,14 @@
 #define CLIENT_UPLOADUNCLASSIFIED_H
 
 
-class UploadUnclassified : public Command {
+class UploadUnclassifiedCommand : public Command {
 private:
     std::vector<Iris> *trainIrises;
     std::vector<Iris> *testIrises;
 public:
     void execute() override;
 
-    explicit UploadUnclassified(DefaultIO *io, std::vector<Iris> *trainIrises, std::vector<Iris> *testIrises);
+    explicit UploadUnclassifiedCommand(DefaultIO *io, std::vector<Iris> *trainIrises, std::vector<Iris> *testIrises);
 };
 
 
