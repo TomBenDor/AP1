@@ -1,10 +1,14 @@
 #include "ConfusionMatrixCommand.h"
 #include "Command.h"
+
+#include <utility>
 #include "map"
 #include "../ConfusionMatrix.h"
 
-ConfusionMatrixCommand::ConfusionMatrixCommand(DefaultIO *io, std::vector<Iris> real, std::vector<Iris> predictions) :
-        Command("display algorithm confusion matrix", io), real(std::move(real)), predictions(std::move(predictions)) {}
+ConfusionMatrixCommand::ConfusionMatrixCommand(DefaultIO *io, std::vector<Iris> real, std::vector<Iris> predictions,
+                                               KnnClassifier<Iris> *classifier) :
+        Command("display algorithm confusion matrix", io), real(std::move(real)), predictions(std::move(predictions)),
+        classifier(classifier) {}
 
 void ConfusionMatrixCommand::execute() {
     std::map<std::string, std::map<std::string, double>> typeMap;
@@ -46,4 +50,5 @@ void ConfusionMatrixCommand::execute() {
 
     ConfusionMatrix m(matrix, types);
     this->getDefaultIO()->write(m.toString());
+    this->getDefaultIO()->write(this->classifier->toString());
 }

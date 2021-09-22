@@ -26,5 +26,6 @@ std::string ConfusionMatrix::toString() {
         }
         matrix += '\n';
     }
+    matrix.pop_back();
     return matrix;
 }
