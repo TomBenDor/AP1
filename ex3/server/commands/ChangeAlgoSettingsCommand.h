@@ -22,7 +22,7 @@ public:
             this->getDefaultIO()->write(this->algo->toString());
             return;
         }
-        std::vector<std::string> parameters = utils::split(input, ',');
+        std::vector<std::string> parameters = utils::split(input, ' ');
         if (parameters.size() != 2) {
             this->getDefaultIO()->write("Expected 2 parameters");
             return;
