@@ -44,7 +44,6 @@ public:
         std::string inputDistance = parameters[1];
         std::transform(inputDistance.begin(), inputDistance.end(), inputDistance.begin(),
                        [](unsigned char c) { return std::tolower(c); });
-        this->getDefaultIO()->write(inputDistance);
         if (inputDistance == "che") {
             newDistance = new ChebyshevDistance<T>;
         } else if (inputDistance == "man") {
