@@ -5,6 +5,7 @@
 #include "TCPServer.h"
 #include "thread"
 #include <unistd.h>
+#include "IO/SocketIO.h"
 
 void handleClient(const std::string &path, int clientSock);
 
@@ -26,8 +27,9 @@ void handleClient(const std::string &path, int clientSock) {
     //Initialize the classifier
     KnnClassifier<Iris> knnClassifier;
     knnClassifier.setData(classified);
+    SocketIO io(clientSock);
     while (true) {
-        std::string msg = utils::recv(clientSock);
+        std::string msg = io.read();
         if (msg == "exit") {
             break;
         }
@@ -40,7 +42,6 @@ void handleClient(const std::string &path, int clientSock) {
             types.append(knnClassifier.classify(iris));
             types.append("\n");
         }
-        utils::send(clientSock, types);
+        io.write(types);
     }
-    close(clientSock);
 }
