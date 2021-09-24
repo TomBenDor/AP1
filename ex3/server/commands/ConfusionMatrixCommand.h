@@ -3,19 +3,64 @@
 #include "string"
 #include "../Iris.h"
 #include "../KnnClassifier.h"
+#include "../ConfusionMatrix.h"
 
 #ifndef TESTING_CONFUSIONMATRIXCOMMAND_H
 #define TESTING_CONFUSIONMATRIXCOMMAND_H
 
-
-class ConfusionMatrixCommand : public Command {
-private:
-    std::vector<Iris> real, predictions;
-    KnnClassifier<Iris> *classifier;
+template<class T>
+class ConfusionMatrixCommand : public Command<T> {
 public:
-    ConfusionMatrixCommand(DefaultIO *, std::vector<Iris>, std::vector<Iris>, KnnClassifier<Iris> *);
+    ConfusionMatrixCommand(DefaultIO *io, ClientData<T> *data) : Command<T>("display algorithm confusion matrix", io,
+                                                                            data) {}
 
-    void execute() override;
+    void execute() override {
+        std::vector<T> classified = this->getData()->getTest();
+        std::vector<std::string> predictions;
+        for (auto t: classified) {
+            predictions.push_back(this->getData()->getClassifier()->classify(t));
+        }
+        std::map<std::string, std::map<std::string, double>> typeMap;
+        for (int i = 0; i < classified.size(); i++) {
+            if (!typeMap[classified[i].getType()].count(predictions[i])) {
+                typeMap[classified[i].getType()][predictions[i]] = 0;
+            }
+            typeMap[classified[i].getType()][predictions[i]]++;
+        }
+
+        std::vector<std::string> types;
+        for (const auto &pair: typeMap) {
+            types.push_back(pair.first);
+            double sum = 0;
+            for (const auto &keys: pair.second) {
+                sum += keys.second;
+            }
+            for (const auto &keys: pair.second) {
+                typeMap[pair.first][keys.first] = 100 * keys.second / sum;
+            }
+        }
+
+        for (const auto &pair: typeMap) {
+            for (const std::string &type: types) {
+                if (!typeMap[pair.first].count(type)) {
+                    typeMap[pair.first][type] = 0;
+                }
+            }
+        }
+
+        std::vector<std::vector<double>> matrix;
+        for (const auto &predictionPercentage: typeMap) {
+            std::vector<double> currPredictions;
+            for (const auto &prediction: predictionPercentage.second) {
+                currPredictions.push_back(prediction.second);
+            }
+            matrix.push_back(currPredictions);
+        }
+
+        ConfusionMatrix m(matrix, types);
+        this->getIO()->write(m.toString());
+        this->getIO()->write(this->getData()->getClassifier()->toString());
+    }
 };
 
 

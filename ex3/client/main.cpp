@@ -2,42 +2,33 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "vector"
-#include "../utils.h"
 #include "TCPClient.h"
+#include "../utils.h"
 #include "thread"
 
-void handleMessage(const std::string &path, const std::string &msg) {
-    utils::writeCSV(path, utils::split(msg, '\n'));
-}
-
-void receiving(TCPClient client, std::string &path) {
+void receiving(TCPClient *client) {
     while (true) {
-        std::string msg = client.recv();
-        handleMessage(path, msg);
+        const std::string &msg = client->recv();
+        if (msg == "exit") {
+            client->close();
+            exit(0);
+        }
+        std::cout << msg << std::endl;
     }
 }
-
 
 int main() {
-    //Crete clients
     TCPClient client(inet_addr("127.0.0.1"), htons(55555));
-    //Get parameters from user
-    std::string parameters;
-    std::string path;
-    std::thread receivingThread(receiving, client, std::ref(path));
-    receivingThread.detach();
-    //Read the iris data from the csv file
+
+    std::thread thread(receiving, &client);
+
     while (true) {
-        std::getline(std::cin, parameters);
-        std::vector<std::string> params = utils::split(parameters, ' ');
-        if (params[0] == "exit") {
-            client.send("exit");
-            break;
+        std::string response;
+        getline(std::cin, response);
+        if (response.rfind("File:", 0) == 0) {
+            response = utils::readFile(response.substr(5, response.length()));
         }
-        path = params[1];
-        client.send(utils::readFile(params[0]));
+
+        client.send(response);
     }
-    client.close();
-    return 0;
 }

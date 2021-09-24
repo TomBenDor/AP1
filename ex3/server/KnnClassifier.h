@@ -77,6 +77,7 @@ public:
     }
 
     void setData(const std::vector<T> &d) {
+        this->data.clear();
         for (auto object: d) {
             this->data.push_back(object);
         }

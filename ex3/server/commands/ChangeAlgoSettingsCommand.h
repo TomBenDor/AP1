@@ -11,20 +11,18 @@
 #define CLIENT_CHANGEALGOSETTINGS_H
 
 template<class T>
-class ChangeAlgoSettingsCommand : public Command {
-private:
-    KnnClassifier<T> *algo;
+class ChangeAlgoSettingsCommand : public Command<T> {
 public:
     void execute() override {
-        this->getDefaultIO()->write(this->algo->toString());
-        std::string input = this->getDefaultIO()->read();
+        this->getIO()->write(this->getData()->getClassifier()->toString());
+        std::string input = this->getIO()->read();
         if (input.empty()) {
-            this->getDefaultIO()->write(this->algo->toString());
+            this->getIO()->write(this->getData()->getClassifier()->toString());
             return;
         }
         std::vector<std::string> parameters = utils::split(input, ' ');
         if (parameters.size() != 2) {
-            this->getDefaultIO()->write("Expected 2 parameters");
+            this->getIO()->write("Expected 2 parameters");
             return;
         }
         int k;
@@ -32,12 +30,12 @@ public:
             k = std::stoi(parameters[0]);
         }
         catch (const std::invalid_argument &exception) {
-            this->getDefaultIO()->write("K should be an int");
+            this->getIO()->write("K should be an int");
             return;
         }
 
         if (k > 10 || k < 1) {
-            this->getDefaultIO()->write("K should be between 1 and 10");
+            this->getIO()->write("K should be between 1 and 10");
             return;
         }
         Distance<T> *newDistance;
@@ -51,16 +49,16 @@ public:
         } else if (inputDistance == "euc") {
             newDistance = new EuclideanDistance<T>;
         } else {
-            this->getDefaultIO()->write("Invalid distance metric");
+            this->getIO()->write("Invalid distance metric");
             return;
         }
-        this->algo->setK(k);
-        this->algo->setDistance(newDistance);
-        this->getDefaultIO()->write(this->algo->toString());
+        this->getData()->getClassifier()->setK(k);
+        this->getData()->getClassifier()->setDistance(newDistance);
+        this->getIO()->write(this->getData()->getClassifier()->toString());
     }
 
-    explicit ChangeAlgoSettingsCommand(DefaultIO *io, KnnClassifier<T> *classifier) : Command("algorithm settings", io),
-                                                                                      algo(classifier) {}
+    explicit ChangeAlgoSettingsCommand(DefaultIO *io, ClientData<T> *data) : Command<T>("algorithm settings", io,
+                                                                                        data) {}
 };
 
 

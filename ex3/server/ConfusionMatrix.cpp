@@ -1,10 +1,8 @@
 #include "ConfusionMatrix.h"
 
 
-ConfusionMatrix::ConfusionMatrix(std::vector<std::vector<double>> entries, std::vector<std::string> types) : entries(
-        std::move(entries)),
-                                                                                                             types(std::move(
-                                                                                                                     types)) {
+ConfusionMatrix::ConfusionMatrix(std::vector<std::vector<double>> entries, std::vector<std::string> types) :
+        entries(std::move(entries)), types(std::move(types)) {
 }
 
 std::string ConfusionMatrix::toString() {
