@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/stat.h>
 #include "TCPClient.h"
 #include "../utils.h"
 #include "thread"
@@ -17,6 +18,11 @@ void receiving(TCPClient *client) {
     }
 }
 
+inline bool isFile(const std::string &name) {
+    struct stat buffer{};
+    return ((stat(name.c_str(), &buffer) == 0) and (buffer.st_mode & S_IFREG));
+}
+
 int main() {
     TCPClient client(inet_addr("127.0.0.1"), htons(55555));
 
@@ -25,8 +31,8 @@ int main() {
     while (true) {
         std::string response;
         getline(std::cin, response);
-        if (response.rfind("File:", 0) == 0) {
-            response = utils::readFile(response.substr(5, response.length()));
+        if (isFile(response)) {
+            response = utils::readFile(response);
         }
 
         client.send(response);
