@@ -10,6 +10,7 @@
 #include "commands/UploadUnclassifiedCommand.h"
 #include "commands/ChangeAlgoSettingsCommand.h"
 #include "commands/ConfusionMatrixCommand.h"
+#include "commands/ClassifyDataCommand.h"
 
 void handleClient(int clientSock);
 
@@ -32,10 +33,13 @@ void handleClient(int clientSock) {
     ClientData<Iris> data(&knnClassifier);
 
     SocketIO io(clientSock);
-    std::vector<Command<Iris> *> commands;
-    commands.push_back(new UploadUnclassifiedCommand<Iris>(&io, &data));
-    commands.push_back(new ChangeAlgoSettingsCommand<Iris>(&io, &data));
-    commands.push_back(new ConfusionMatrixCommand<Iris>(&io, &data));
+    std::vector<Command<Iris> *> commands = {
+            new UploadUnclassifiedCommand<Iris>(&io, &data),
+            new ChangeAlgoSettingsCommand<Iris>(&io, &data),
+            new ClassifyDataCommand<Iris>(&io, &data),
+            new ConfusionMatrixCommand<Iris>(&io, &data)
+    };
+
     while (true) {
         printMenu(io, commands);
 

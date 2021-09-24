@@ -15,17 +15,14 @@ public:
                                                                             data) {}
 
     void execute() override {
-        std::vector<T> classified = this->getData()->getTest();
-        std::vector<std::string> predictions;
-        for (auto t: classified) {
-            predictions.push_back(this->getData()->getClassifier()->classify(t));
-        }
+        std::vector<T> test = this->getData()->getTest();
+        std::vector<std::string> predictions = this->getData()->getClassified();
         std::map<std::string, std::map<std::string, double>> typeMap;
-        for (int i = 0; i < classified.size(); i++) {
-            if (!typeMap[classified[i].getType()].count(predictions[i])) {
-                typeMap[classified[i].getType()][predictions[i]] = 0;
+        for (int i = 0; i < test.size(); i++) {
+            if (!typeMap[test[i].getType()].count(predictions[i])) {
+                typeMap[test[i].getType()][predictions[i]] = 0;
             }
-            typeMap[classified[i].getType()][predictions[i]]++;
+            typeMap[test[i].getType()][predictions[i]]++;
         }
 
         std::vector<std::string> types;
