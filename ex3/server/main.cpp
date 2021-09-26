@@ -4,10 +4,16 @@
 #include "KnnClassifier.h"
 #include "TCPServer.h"
 #include "thread"
-#include <unistd.h>
 #include "IO/SocketIO.h"
+#include "ClientData.h"
+#include "commands/Command.h"
+#include "commands/UploadUnclassifiedCommand.h"
+#include "commands/ChangeAlgoSettingsCommand.h"
+#include "commands/ConfusionMatrixCommand.h"
 
-void handleClient(const std::string &path, int clientSock);
+void handleClient(int clientSock);
+
+void printMenu(SocketIO &io, std::vector<Command<Iris> *> commands);
 
 int main(int argc, char *argv[]) {
     //Initialize the server according to the command line arguments
@@ -16,32 +22,41 @@ int main(int argc, char *argv[]) {
     while (true) {
         int clientSock = server.accept();
 
-        std::thread handlingClient(handleClient, argv[1], clientSock);
+        std::thread handlingClient(handleClient, clientSock);
         handlingClient.detach();
     }
 }
 
-void handleClient(const std::string &path, int clientSock) {
-    //Get the classified data
-    std::vector<Iris> classified = toIrisVector(utils::readCSV(path), true);
-    //Initialize the classifier
+void handleClient(int clientSock) {
     KnnClassifier<Iris> knnClassifier;
-    knnClassifier.setData(classified);
+    ClientData<Iris> data(&knnClassifier);
+
     SocketIO io(clientSock);
+    std::vector<Command<Iris> *> commands;
+    commands.push_back(new UploadUnclassifiedCommand<Iris>(&io, &data));
+    commands.push_back(new ChangeAlgoSettingsCommand<Iris>(&io, &data));
+    commands.push_back(new ConfusionMatrixCommand<Iris>(&io, &data));
     while (true) {
-        std::string msg = io.read();
-        if (msg == "exit") {
+        printMenu(io, commands);
+
+        std::string option = io.read();
+        if (option == std::to_string(commands.size() + 1)) {
+            io.write("exit");
             break;
         }
-        //Get the indices of the irises
-        std::vector<std::string> indices = utils::split(msg, '\n');
-        std::string types;
-        //Classify each of the irises
-        for (const std::string &index: indices) {
-            Iris iris(utils::split(index, ','), false);
-            types.append(knnClassifier.classify(iris));
-            types.append("\n");
-        }
-        io.write(types);
+        commands[std::stoi(option) - 1]->execute();
     }
+
+    for (auto command: commands) {
+        delete command;
+    }
+}
+
+void printMenu(SocketIO &io, std::vector<Command<Iris> *> commands) {
+    std::string msg = "Welcome to the KNN Classifier Server. Please choose an option:";
+    for (int i = 0; i < commands.size(); i++) {
+        msg.append("\n" + std::to_string(i + 1) + ". " + commands[i]->getDescription());
+    }
+    msg.append("\n" + std::to_string(commands.size() + 1) + ". exit");
+    io.write(msg);
 }
