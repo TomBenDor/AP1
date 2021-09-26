@@ -33,5 +33,4 @@ public:
     virtual ~Command() = default;
 };
 
-
 #endif //CLIENT_COMMAND_H

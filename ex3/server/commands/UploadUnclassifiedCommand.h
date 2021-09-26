@@ -16,7 +16,6 @@ public:
         this->getData()->setTrain(stringToIrisVector(input, true));
         this->getIO()->write("Upload Complete.");
         this->getIO()->write("Please upload your local test csv file");
-
         input = this->getIO()->read();
         this->getData()->setTest(stringToIrisVector(input, true));
         this->getIO()->write("Upload Complete");
