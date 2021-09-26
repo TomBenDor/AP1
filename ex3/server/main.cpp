@@ -11,6 +11,7 @@
 #include "commands/ChangeAlgoSettingsCommand.h"
 #include "commands/ConfusionMatrixCommand.h"
 #include "commands/ClassifyDataCommand.h"
+#include "commands/DisplayResultsCommand.h"
 
 void handleClient(int clientSock);
 
@@ -37,6 +38,7 @@ void handleClient(int clientSock) {
             new UploadUnclassifiedCommand<Iris>(&io, &data),
             new ChangeAlgoSettingsCommand<Iris>(&io, &data),
             new ClassifyDataCommand<Iris>(&io, &data),
+            new DisplayResultsCommand<Iris>(&io, &data),
             new ConfusionMatrixCommand<Iris>(&io, &data)
     };
 
