@@ -50,6 +50,10 @@ void handleClient(int clientSock) {
         }
         commands[std::stoi(option) - 1]->execute();
     }
+
+    for (auto command: commands) {
+        delete command;
+    }
 }
 
 void printMenu(SocketIO &io, std::vector<Command<Iris> *> commands) {

@@ -14,8 +14,8 @@ public:
         this->getIO()->write("Please upload your local train csv file");
         std::string input = this->getIO()->read();
         this->getData()->setTrain(stringToIrisVector(input, true));
-        this->getIO()->write("Upload Complete\nPlease upload your local test csv file");
-
+        this->getIO()->write("Upload Complete.");
+        this->getIO()->write("Please upload your local test csv file");
         input = this->getIO()->read();
         this->getData()->setTest(stringToIrisVector(input, true));
         this->getIO()->write("Upload Complete");

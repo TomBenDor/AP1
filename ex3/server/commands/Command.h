@@ -27,9 +27,10 @@ public:
 
     virtual void execute() = 0;
 
-    Command(std::string description, DefaultIO *io, ClientData<T> *data) : description(std::move(description)), io(io),
-                                                                           data(data) {}
-};
+    Command(std::string description, DefaultIO *io, ClientData<T> *data) :
+            description(std::move(description)), io(io), data(data) {}
 
+    virtual ~Command() = default;
+};
 
 #endif //CLIENT_COMMAND_H
