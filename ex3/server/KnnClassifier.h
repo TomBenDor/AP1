@@ -54,9 +54,11 @@ public:
         }
         //Count the appearances of each type
         std::map<std::string, int> predictions;
+        std::vector<std::string> keys;
         for (auto object: knn) {
             if (predictions.count(object.getType()) == 0) {
                 predictions[object.getType()] = 0;
+                keys.push_back(object.getType());
             }
             predictions[object.getType()]++;
 
@@ -66,11 +68,15 @@ public:
         std::string maxType;
 
         for (const auto &pair: predictions) {
-
             if (max < pair.second) {
                 maxType = pair.first;
                 max = pair.second;
             }
+        }
+        int maxOccurrences = std::count_if(std::begin(predictions), std::end(predictions),
+                                           [max](std::pair<std::string, int> const &p) { return p.second == max; });
+        if (maxOccurrences > 1) {
+            return keys[0];
         }
 
         return maxType;
