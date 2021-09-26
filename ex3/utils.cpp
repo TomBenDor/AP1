@@ -3,6 +3,8 @@
 #include "utils.h"
 #include <netinet/in.h>
 #include <cstring>
+#include <regex>
+
 
 namespace utils {
     std::string readFile(const std::string &path) {
@@ -53,21 +55,23 @@ namespace utils {
     }
 
     std::string recv(int sock) {
-        char buffer[4096];
-        int expected_data_len = 4096;
-        ssize_t read_bytes = ::recv(sock, buffer, expected_data_len, 0);
-        if (read_bytes < 0) {
-            perror("error writing to sock");
+        std::string msg;
+        std::string ending = "<end>";
+
+        char buffer[1];
+        while (!std::equal(ending.rbegin(), ending.rend(), msg.rbegin())) {
+            buffer[0] = 0;
+            ssize_t read_bytes = ::recv(sock, buffer, 1, 0);
+            if (read_bytes < 0) {
+                perror("error writing to sock");
+            }
+            msg.append(buffer);
         }
-        //Create a string and return it
-        std::string res(buffer);
-        std::string delimiter = "end";
-        res = res.substr(0, res.find(delimiter));
-        return res;
+        return msg.substr(0, msg.length() - 5);
     }
 
     void send(int sock, const std::string &string) {
-        std::string msg = string + "end";
+        std::string msg = string + "<end>";
         //Send the string through the socket
         size_t sent_bytes = ::send(sock, msg.c_str(), strlen(msg.c_str()), 0);
         if (sent_bytes < 0) {
