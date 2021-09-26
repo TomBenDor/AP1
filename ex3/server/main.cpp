@@ -5,6 +5,7 @@
 #include "TCPServer.h"
 #include "thread"
 #include "IO/SocketIO.h"
+#include "IO/DefaultIO.h"
 #include "ClientData.h"
 #include "commands/Command.h"
 #include "commands/UploadUnclassifiedCommand.h"
@@ -15,7 +16,7 @@
 
 void handleClient(int clientSock);
 
-void printMenu(SocketIO &io, std::vector<Command<Iris> *> commands);
+void printMenu(DefaultIO *io, std::vector<Command<Iris> *> commands);
 
 int main(int argc, char *argv[]) {
     //Initialize the server according to the command line arguments
@@ -43,7 +44,7 @@ void handleClient(int clientSock) {
     };
 
     while (true) {
-        printMenu(io, commands);
+        printMenu(&io, commands);
 
         std::string option = io.read();
         if (option == std::to_string(commands.size() + 1)) {
@@ -58,11 +59,11 @@ void handleClient(int clientSock) {
     }
 }
 
-void printMenu(SocketIO &io, std::vector<Command<Iris> *> commands) {
+void printMenu(DefaultIO *io, std::vector<Command<Iris> *> commands) {
     std::string msg = "Welcome to the KNN Classifier Server. Please choose an option:";
     for (int i = 0; i < commands.size(); i++) {
         msg.append("\n" + std::to_string(i + 1) + ". " + commands[i]->getDescription());
     }
     msg.append("\n" + std::to_string(commands.size() + 1) + ". exit");
-    io.write(msg);
+    io->write(msg);
 }

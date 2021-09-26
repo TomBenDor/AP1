@@ -1,7 +1,7 @@
 #include "Command.h"
 #include "vector"
 #include "../Iris.h"
-#include "../IO/SocketIO.h"
+#include "../IO/DefaultIO.h"
 #include "../ClientData.h"
 
 #ifndef CLIENT_UPLOADUNCLASSIFIED_H
@@ -21,8 +21,8 @@ public:
         this->getIO()->write("Upload Complete");
     }
 
-    UploadUnclassifiedCommand(SocketIO *io, ClientData<Iris> *data) : Command<T>("upload an unclassified csv data file",
-                                                                                 io, data) {}
+    UploadUnclassifiedCommand(DefaultIO *io, ClientData<Iris> *data) :
+            Command<T>("upload an unclassified csv data file", io, data) {}
 };
 
 
