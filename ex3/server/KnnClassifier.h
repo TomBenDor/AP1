@@ -45,7 +45,7 @@ public:
         }
 
         //Sort the vector and get the first k elements
-        std::sort(data.begin(), data.end(), Comparator(std::move(unclassified), this->distance));
+        std::sort(data.begin(), data.end(), Comparator(unclassified, this->distance));
         auto start = data.begin();
         auto end = data.begin() + k;
         std::vector<T> knn;
