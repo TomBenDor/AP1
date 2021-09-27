@@ -44,15 +44,16 @@ public:
             perror("Data is empty!");
         }
 
+        std::vector<T> copy(data);
         //Sort the vector and get the first k elements
-        std::stable_sort(data.begin(), data.end(), Comparator(unclassified, this->distance));
+        std::stable_sort(copy.begin(), copy.end(), Comparator(unclassified, this->distance));
         //Count the appearances of each type
         std::map<std::string, int> predictions;
         for (int i = 0; i < k; i++) {
-            if (predictions.count(data[i].getType()) == 0) {
-                predictions[data[i].getType()] = 0;
+            if (predictions.count(copy[i].getType()) == 0) {
+                predictions[copy[i].getType()] = 0;
             }
-            predictions[data[i].getType()]++;
+            predictions[copy[i].getType()]++;
 
         }
         //Return the type with the max amount of appearances
@@ -68,7 +69,7 @@ public:
         int maxOccurrences = std::count_if(std::begin(predictions), std::end(predictions),
                                            [max](std::pair<std::string, int> const &p) { return p.second == max; });
         if (maxOccurrences > 1) {
-            return data[0].getType();
+            return copy[0].getType();
         }
 
         return maxType;
