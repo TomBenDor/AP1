@@ -20,7 +20,7 @@ private:
     std::vector<T> data;
     int k = 5;
 
-    Distance<T> *distance = new EuclideanDistance<T>;
+    std::unique_ptr<Distance<T>> distance = std::make_unique<EuclideanDistance<T>>();
 
     //The comparator class
     class Comparator {
@@ -46,7 +46,7 @@ public:
 
         std::vector<T> copy(data);
         //Sort the vector and get the first k elements
-        std::stable_sort(copy.begin(), copy.end(), Comparator(unclassified, this->distance));
+        std::stable_sort(copy.begin(), copy.end(), Comparator(unclassified, this->distance.get()));
         //Count the appearances of each type
         std::map<std::string, int> predictions;
         for (int i = 0; i < k; i++) {
@@ -82,9 +82,8 @@ public:
         }
     }
 
-    void setDistance(Distance<T> *newDistance) {
-        delete distance;
-        this->distance = newDistance;
+    void setDistance(std::unique_ptr<Distance<T>> &newDistance) {
+        this->distance = std::move(newDistance);
     }
 
     Distance<T> *getDistance() {
@@ -99,18 +98,6 @@ public:
         return "The current KNN parameters are: K = " + std::to_string(k) + ", distance metric = " +
                distance->toString();
     }
-
-    ~KnnClassifier() {
-        delete distance;
-    }
-
-    KnnClassifier() = default;
-
-    KnnClassifier(KnnClassifier &&o) noexcept = default;
-
-    KnnClassifier(const KnnClassifier &o) = default;
-
-    KnnClassifier &operator=(const KnnClassifier &) = default;
 };
 
 

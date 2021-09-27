@@ -6,6 +6,7 @@
 #include "../metrics/EuclideanDistance.h"
 #include "../metrics/ManhattanDistance.h"
 #include "algorithm"
+#include <memory>
 
 #ifndef CLIENT_CHANGEALGOSETTINGS_H
 #define CLIENT_CHANGEALGOSETTINGS_H
@@ -38,16 +39,16 @@ public:
             this->getIO()->write("K should be between 1 and 10");
             return;
         }
-        Distance<T> *newDistance;
+        std::unique_ptr<Distance<T>> newDistance;
         std::string inputDistance = parameters[1];
         std::transform(inputDistance.begin(), inputDistance.end(), inputDistance.begin(),
                        [](unsigned char c) { return std::tolower(c); });
         if (inputDistance == "che") {
-            newDistance = new ChebyshevDistance<T>;
+            newDistance = std::make_unique<ChebyshevDistance<T>>();
         } else if (inputDistance == "man") {
-            newDistance = new ManhattanDistance<T>;
+            newDistance = std::make_unique<ManhattanDistance<T>>();
         } else if (inputDistance == "euc") {
-            newDistance = new EuclideanDistance<T>;
+            newDistance = std::make_unique<EuclideanDistance<T>>();
         } else {
             this->getIO()->write("Invalid distance metric");
             return;
