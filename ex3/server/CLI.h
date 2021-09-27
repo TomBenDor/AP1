@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "vector"
 #include "commands/Command.h"
 
@@ -8,7 +10,7 @@ template<class T>
 class CLI {
 private:
     DefaultIO *io;
-    std::vector<Command<T> *> commands;
+    std::vector<std::unique_ptr<Command<Iris>>> commands;
 
     void printMenu() {
         std::string msg = "Welcome to the KNN Classifier Server. Please choose an option:";
@@ -20,10 +22,7 @@ private:
     }
 
 public:
-    CLI(DefaultIO *io, std::vector<Command<T> *> commands) : io(io) {
-        for (auto i: commands) {
-            this->commands.push_back(i);
-        }
+    CLI(DefaultIO *io, std::vector<std::unique_ptr<Command<Iris>>> commands) : io(io), commands(std::move(commands)) {
     }
 
     void run() {
@@ -35,12 +34,6 @@ public:
                 break;
             }
             commands[std::stoi(option) - 1]->execute();
-        }
-    }
-
-    ~CLI() {
-        for (auto i: this->commands) {
-            delete i;
         }
     }
 };

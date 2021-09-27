@@ -1,3 +1,4 @@
+#include <memory>
 #include <vector>
 #include "Iris.h"
 #include "../utils.h"
@@ -14,6 +15,7 @@
 #include "commands/ClassifyDataCommand.h"
 #include "commands/DisplayResultsCommand.h"
 #include "CLI.h"
+
 void handleClient(int clientSock);
 
 int main(int argc, char *argv[]) {
@@ -31,15 +33,15 @@ int main(int argc, char *argv[]) {
 void handleClient(int clientSock) {
     KnnClassifier<Iris> knnClassifier;
     ClientData<Iris> data(&knnClassifier);
-
     SocketIO io(clientSock);
-    std::vector<Command<Iris> *> commands = {
-            new UploadUnclassifiedCommand<Iris>(&io, &data),
-            new ChangeAlgoSettingsCommand<Iris>(&io, &data),
-            new ClassifyDataCommand<Iris>(&io, &data),
-            new DisplayResultsCommand<Iris>(&io, &data),
-            new ConfusionMatrixCommand<Iris>(&io, &data)
-    };
-    CLI<Iris> cli(&io, commands);
+
+    std::vector<std::unique_ptr<Command<Iris>>> commands;
+    commands.push_back(std::make_unique<UploadUnclassifiedCommand<Iris>>(&io, &data));
+    commands.push_back(std::make_unique<ChangeAlgoSettingsCommand<Iris>>(&io, &data));
+    commands.push_back(std::make_unique<ClassifyDataCommand<Iris>>(&io, &data));
+    commands.push_back(std::make_unique<DisplayResultsCommand<Iris>>(&io, &data));
+    commands.push_back(std::make_unique<ConfusionMatrixCommand<Iris>>(&io, &data));
+
+    CLI<Iris> cli(&io, std::move(commands));
     cli.run();
 }
