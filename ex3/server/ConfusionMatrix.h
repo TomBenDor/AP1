@@ -7,11 +7,12 @@
 
 class ConfusionMatrix {
 private:
-    std::vector<std::vector<double>> entries;
+    std::vector<std::vector<std::string>> entries;
     std::vector<std::string> types;
+    std::string separator = "    ";
 
 public:
-    ConfusionMatrix(std::vector<std::vector<double>> entries, std::vector<std::string> types);
+    ConfusionMatrix(std::vector<std::vector<std::string>> entries, std::vector<std::string> types);
 
     std::string toString();
 
