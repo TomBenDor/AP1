@@ -1,5 +1,5 @@
 #include "Iris.h"
-
+#include "stdexcept"
 #include <utility>
 #include "vector"
 #include "../utils.h"
@@ -49,6 +49,9 @@ std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassif
     std::vector<Iris> irises;
     for (const std::string &coordinatesEncoding: irisesEncodings) {
         std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ',');
+        if (coordinates.size() < 2) {
+            throw std::invalid_argument("Iris should have at least one coordinate");
+        }
         irises.emplace_back(coordinates, isClassified);
     }
     return irises;

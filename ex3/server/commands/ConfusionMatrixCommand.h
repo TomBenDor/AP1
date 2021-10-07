@@ -16,7 +16,15 @@ public:
 
     void execute() override {
         std::vector<T> test = this->getData()->getTest();
+        if (test.empty()) {
+            this->getIO()->write("Upload files first");
+            return;
+        }
         std::vector<std::string> predictions = this->getData()->getClassified();
+        if (predictions.empty()) {
+            this->getIO()->write("Classify first");
+            return;
+        }
         std::map<std::string, std::map<std::string, double>> typeMap;
         for (int i = 0; i < test.size(); i++) {
             if (!typeMap[test[i].getType()].count(predictions[i])) {

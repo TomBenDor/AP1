@@ -7,6 +7,10 @@ template<class T>
 class ClassifyDataCommand : public Command<T> {
 public:
     void execute() override {
+        if (this->getData()->getTest().empty()) {
+            this->getIO()->write("Upload files first");
+            return;
+        }
         this->getData()->classify();
         this->getIO()->write("classifying data complete");
     }
