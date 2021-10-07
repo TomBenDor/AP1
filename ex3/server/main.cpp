@@ -25,9 +25,15 @@ int main(int argc, char *argv[]) {
     while (true) {
         int clientSock = server.accept();
 
+        if (clientSock == -1) {
+            break;
+        }
+
         std::thread handlingClient(handleClient, clientSock);
         handlingClient.detach();
     }
+
+    server.close();
 }
 
 void handleClient(int clientSock) {

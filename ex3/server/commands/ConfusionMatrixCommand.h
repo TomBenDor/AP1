@@ -45,11 +45,11 @@ public:
             }
         }
 
-        std::vector<std::vector<double>> matrix;
+        std::vector<std::vector<std::string>> matrix;
         for (const auto &predictionPercentage: typeMap) {
-            std::vector<double> currPredictions;
+            std::vector<std::string> currPredictions;
             for (const auto &prediction: predictionPercentage.second) {
-                currPredictions.push_back(prediction.second);
+                currPredictions.push_back(std::to_string(prediction.second));
             }
             matrix.push_back(currPredictions);
         }
