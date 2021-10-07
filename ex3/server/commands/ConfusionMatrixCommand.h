@@ -16,10 +16,7 @@ public:
 
     void execute() override {
         std::vector<T> test = this->getData()->getTest();
-        std::vector<std::string> predictions;
-        for (auto t: test) {
-            predictions.push_back(this->getData()->getClassifier()->classify(t));
-        }
+        std::vector<std::string> predictions = this->getData()->getClassified();
         std::map<std::string, std::map<std::string, double>> typeMap;
         for (int i = 0; i < test.size(); i++) {
             if (!typeMap[test[i].getType()].count(predictions[i])) {

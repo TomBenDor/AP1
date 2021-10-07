@@ -29,11 +29,23 @@ public:
         while (true) {
             printMenu();
             std::string option = io->read();
-            if (option == std::to_string(commands.size() + 1)) {
+            int optionNumber;
+            try {
+                optionNumber = std::stoi(option) - 1;
+            }
+            catch (const std::exception &e) {
+                io->write("Please enter a number");
+                continue;
+            }
+            if (optionNumber == commands.size()) {
                 io->write("exit");
                 break;
             }
-            commands[std::stoi(option) - 1]->execute();
+            if (optionNumber < 0 || optionNumber > commands.size()) {
+                io->write("Invalid command");
+                continue;
+            }
+            commands[optionNumber]->execute();
         }
     }
 };
