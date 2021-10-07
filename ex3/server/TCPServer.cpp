@@ -1,6 +1,5 @@
 #include "TCPServer.h"
 #include <unistd.h>
-#include "stdio.h"
 #include "cstring"
 
 TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK_STREAM, 0)), from() {
@@ -21,16 +20,30 @@ TCPServer::TCPServer(in_addr_t ip, in_port_t port) : sockId(socket(AF_INET, SOCK
     if (listen(sockId, this->queueLen) < 0) {
         perror("error listening to a socket");
     }
+
+    memset(&tv, 0, sizeof(tv));
+    // Timeout in seconds
+    tv.tv_sec = 180;
+
+    FD_ZERO(&readfds);
+    FD_SET(sockId, &readfds);
 }
 
 
 int TCPServer::accept() {
-    unsigned int addr_len = sizeof(this->from);
-    int sock = ::accept(sockId, (struct sockaddr *) &from, &addr_len);
-    if (sock < 0) {
-        perror("error accepting client");
+    if (select(sockId + 1, &readfds, nullptr, nullptr, &tv) < 0) {
+        perror("select error");
     }
-    return sock;
+    // If a connection has been made to connect to the server, and the Timeout hasn't passed yet
+    if (FD_ISSET(sockId, &readfds)) {
+        unsigned int addr_len = sizeof(this->from);
+        int sock = ::accept(sockId, (struct sockaddr *) &from, &addr_len);
+        if (sock < 0) {
+            perror("error accepting client");
+        }
+        return sock;
+    }
+    return -1;
 }
 
 void TCPServer::close() const {
