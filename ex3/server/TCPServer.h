@@ -9,6 +9,8 @@ private:
     int sockId;
     int queueLen = 5;
     struct sockaddr_in from;
+    fd_set readfds;
+    struct timeval tv;
 public:
     TCPServer(in_addr_t ip, in_port_t port);
 
