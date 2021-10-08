@@ -7,21 +7,11 @@
 #include "../utils.h"
 #include "thread"
 
-void receiving(TCPClient *client) {
-    while (true) {
-        const std::string &msg = client->recv();
-        if (msg == "exit") {
-            client->close();
-            exit(0);
-        }
-        std::cout << msg << std::endl;
-    }
-}
+void handleMessage(const std::string &msg);
 
-inline bool isFile(const std::string &name) {
-    struct stat buffer{};
-    return ((stat(name.c_str(), &buffer) == 0) and (buffer.st_mode & S_IFREG));
-}
+void receiving(TCPClient *client);
+
+inline bool isFile(const std::string &name);
 
 int main() {
     TCPClient client(inet_addr("127.0.0.1"), htons(55555));
@@ -34,7 +24,25 @@ int main() {
         if (isFile(response)) {
             response = utils::readFile(response);
         }
-
         client.send(response);
     }
+}
+
+void receiving(TCPClient *client) {
+    while (true) {
+        const std::string &msg = client->recv();
+        handleMessage(msg);
+    }
+}
+
+void handleMessage(const std::string &msg) {
+    if (msg == "exit") {
+        exit(0);
+    }
+    std::cout << msg << std::endl;
+}
+
+bool isFile(const std::string &name) {
+    struct stat buffer{};
+    return ((stat(name.c_str(), &buffer) == 0) and (buffer.st_mode & S_IFREG));
 }
