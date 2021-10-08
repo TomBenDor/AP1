@@ -1,6 +1,5 @@
 #include "Iris.h"
 #include "stdexcept"
-#include <utility>
 #include "vector"
 #include "../utils.h"
 
@@ -47,12 +46,21 @@ std::vector<Iris> toIrisVector(const std::vector<std::vector<std::string>> &data
 std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassified) {
     std::vector<std::string> irisesEncodings = utils::split(encoding, '\n');
     std::vector<Iris> irises;
+    int coordinateNum = utils::split(irisesEncodings[0], ',').size();
     for (const std::string &coordinatesEncoding: irisesEncodings) {
         std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ',');
         if (coordinates.size() < 2) {
-            throw std::invalid_argument("Iris should have at least one coordinate");
+            throw "Iris should have at least one coordinate";
         }
-        irises.emplace_back(coordinates, isClassified);
+        if (coordinates.size() != coordinateNum) {
+            throw "All Irises should have the same amount of coordinates";
+        }
+        try {
+            irises.emplace_back(coordinates, isClassified);
+        }
+        catch (const std::exception &e) {
+            throw "Invalid coordinates";
+        }
     }
     return irises;
 }

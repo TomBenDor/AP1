@@ -16,8 +16,8 @@ public:
         try {
             this->getData()->setTrain(stringToIrisVector(input, true));
         }
-        catch (const std::invalid_argument &e) {
-            this->getIO()->write("Upload a valid file");
+        catch (const char *msg) {
+            this->getIO()->write(msg);
             return;
         }
         this->getIO()->write("Upload Complete.");
@@ -26,8 +26,8 @@ public:
         try {
             this->getData()->setTest(stringToIrisVector(input, true));
         }
-        catch (const std::invalid_argument &e) {
-            this->getIO()->write("Upload a valid file");
+        catch (const char *msg) {
+            this->getIO()->write(msg);
             return;
         }
         this->getIO()->write("Upload Complete");
