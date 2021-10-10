@@ -8,6 +8,10 @@ template<class T>
 class ClassifyDataCommand : public Command<T> {
 public:
     void execute() override {
+        if (this->getData()->getTest().empty()) {
+            this->getIO()->write("Upload files first");
+            return;
+        }
         this->getIO()->write("Started classifying");
         std::thread classifying([this] { this->getData()->classify(); });
         classifying.detach();
