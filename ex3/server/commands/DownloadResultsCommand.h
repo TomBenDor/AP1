@@ -7,6 +7,14 @@ template<class T>
 class DownloadResultsCommand : public Command<T> {
 public:
     void execute() override {
+        if (this->getData()->getTest().empty()) {
+            this->getIO()->write("Upload files first");
+            return;
+        }
+        if (this->getData()->getClassified().empty()) {
+            this->getIO()->write("Classify first");
+            return;
+        }
         this->getIO()->write("Enter path for the output file");
         std::string path = this->getIO()->read();
         std::stringstream msg;

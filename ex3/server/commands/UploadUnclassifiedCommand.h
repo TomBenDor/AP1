@@ -13,11 +13,23 @@ public:
     void execute() override {
         this->getIO()->write("Please upload your local train csv file");
         std::string input = this->getIO()->read();
-        this->getData()->setTrain(stringToIrisVector(input, true));
+        try {
+            this->getData()->setTrain(stringToIrisVector(input, true));
+        }
+        catch (const char *msg) {
+            this->getIO()->write(msg);
+            return;
+        }
         this->getIO()->write("Upload Complete.");
         this->getIO()->write("Please upload your local test csv file");
         input = this->getIO()->read();
-        this->getData()->setTest(stringToIrisVector(input, true));
+        try {
+            this->getData()->setTest(stringToIrisVector(input, true));
+        }
+        catch (const char *msg) {
+            this->getIO()->write(msg);
+            return;
+        }
         this->getIO()->write("Upload Complete");
     }
 
