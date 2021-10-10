@@ -6,6 +6,7 @@
 #include "TCPClient.h"
 #include "../utils.h"
 #include "thread"
+#include <regex>
 
 void handleMessage(const std::string &msg);
 
@@ -39,7 +40,14 @@ void handleMessage(const std::string &msg) {
     if (msg == "exit") {
         exit(0);
     }
-    std::cout << msg << std::endl;
+    std::regex rgx("SAVE <((.|\\n)+)> TO <(.*)>");
+    std::smatch matches;
+
+    if (std::regex_search(msg, matches, rgx)) {
+        utils::writeFile(matches[3].str(), matches[1].str());
+    } else {
+        std::cout << msg << std::endl;
+    }
 }
 
 bool isFile(const std::string &name) {
