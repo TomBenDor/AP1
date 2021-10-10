@@ -7,12 +7,8 @@ template<class T>
 class DownloadResultsCommand : public Command<T> {
 public:
     void execute() override {
-        if (this->getData()->getTest().empty()) {
-            this->getIO()->write("Upload files first");
-            return;
-        }
         if (this->getData()->getClassified().empty()) {
-            this->getIO()->write("Classify first");
+            this->getIO()->write("Classify first to get results");
             return;
         }
         this->getIO()->write("Enter path for the output file");
