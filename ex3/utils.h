@@ -9,7 +9,7 @@ namespace utils {
 
     std::vector<std::vector<std::string>> readCSV(const std::string &);
 
-    void writeCSV(const std::string &, const std::vector<std::string> &);
+    void writeFile(const std::string &path, const std::string &content);
 
     std::vector<std::string> split(const std::string &, char);
 
