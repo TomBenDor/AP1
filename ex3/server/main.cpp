@@ -14,6 +14,7 @@
 #include "commands/ConfusionMatrixCommand.h"
 #include "commands/ClassifyDataCommand.h"
 #include "commands/DisplayResultsCommand.h"
+#include "commands/DownloadResultsCommand.h"
 #include "CLI.h"
 
 void handleClient(int clientSock);
@@ -46,6 +47,7 @@ void handleClient(int clientSock) {
     commands.push_back(std::make_unique<ChangeAlgoSettingsCommand<Iris>>(&io, &data));
     commands.push_back(std::make_unique<ClassifyDataCommand<Iris>>(&io, &data));
     commands.push_back(std::make_unique<DisplayResultsCommand<Iris>>(&io, &data));
+    commands.push_back(std::make_unique<DownloadResultsCommand<Iris>>(&io, &data));
     commands.push_back(std::make_unique<ConfusionMatrixCommand<Iris>>(&io, &data));
 
     CLI<Iris> cli(&io, std::move(commands));
