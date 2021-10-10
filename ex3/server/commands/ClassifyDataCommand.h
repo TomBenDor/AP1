@@ -16,7 +16,7 @@ public:
         std::thread classifying([this] { this->getData()->classify(); });
         classifying.detach();
     }
-  
+
     ClassifyDataCommand(DefaultIO *io, ClientData<T> *data) : Command<T>("classify data", io, data) {}
 };
 
