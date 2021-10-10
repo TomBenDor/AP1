@@ -17,27 +17,25 @@
 #include "commands/DownloadResultsCommand.h"
 #include "CLI.h"
 
-void handleClient(int clientSock);
+void handleClient(int clientSock, TCPServer *server);
 
 int main(int argc, char *argv[]) {
     //Initialize the server according to the command line arguments
     TCPServer server(INADDR_ANY, htons(55555));
-
     while (true) {
         int clientSock = server.accept();
 
         if (clientSock == -1) {
             break;
         }
-
-        std::thread handlingClient(handleClient, clientSock);
+        std::thread handlingClient(handleClient, clientSock, &server);
         handlingClient.detach();
     }
-
+    while (server.getClientNum()) {}
     server.close();
 }
 
-void handleClient(int clientSock) {
+void handleClient(int clientSock, TCPServer *server) {
     KnnClassifier<Iris> knnClassifier;
     ClientData<Iris> data(&knnClassifier);
     SocketIO io(clientSock);
@@ -52,4 +50,5 @@ void handleClient(int clientSock) {
 
     CLI<Iris> cli(&io, std::move(commands));
     cli.run();
+    server->disconnectClient(clientSock);
 }

@@ -41,6 +41,7 @@ int TCPServer::accept() {
         if (sock < 0) {
             perror("error accepting client");
         }
+        this->clientNum++;
         return sock;
     }
     return -1;
@@ -50,4 +51,13 @@ void TCPServer::close() const {
     //Close the socket
     ::close(this->sockId);
 
+}
+
+void TCPServer::disconnectClient(int sock) {
+    ::close(sock);
+    this->clientNum--;
+}
+
+int TCPServer::getClientNum() const {
+    return this->clientNum;
 }
