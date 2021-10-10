@@ -34,12 +34,9 @@ namespace utils {
     }
 
     // Write to a csv file
-    void writeCSV(const std::string &path, const std::vector<std::string> &data) {
+    void writeFile(const std::string &path, const std::string &content) {
         std::ofstream fout(path);
-
-        for (const std::string &line: data) {
-            fout << line << std::endl;
-        }
+        fout << content;
     }
 
     std::vector<std::string> split(const std::string &s, const char c) {
