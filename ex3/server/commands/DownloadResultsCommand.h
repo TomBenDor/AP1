@@ -12,7 +12,7 @@ public:
         std::stringstream msg;
         msg << "SAVE <";
         for (int i = 0; i < this->getData()->getClassified().size(); i++) {
-            msg << std::to_string(i + 1) + " " + this->getData()->getClassified()[i] << "\n";
+            msg << std::to_string(i + 1) + '\t' + this->getData()->getClassified()[i] << "\n";
         }
         msg << "Done." << "> " << "TO <" << path << ">";
         this->getIO()->write(msg.str());
