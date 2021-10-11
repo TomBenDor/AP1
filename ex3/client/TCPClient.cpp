@@ -27,7 +27,7 @@ TCPClient::TCPClient(in_addr_t ip, in_port_t port) : sock(socket(AF_INET, SOCK_S
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = ip;
     sin.sin_port = port;
-
+    //Connect to the server
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting to server");
     }

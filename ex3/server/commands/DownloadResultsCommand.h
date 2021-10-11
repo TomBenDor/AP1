@@ -14,6 +14,7 @@ public:
         this->getIO()->write("Enter path for the output file");
         std::string path = this->getIO()->read();
         std::stringstream msg;
+        //Encapsulate the message in order for it to be saved instead of printed
         msg << "SAVE <";
         for (int i = 0; i < this->getData()->getClassified().size(); i++) {
             msg << std::to_string(i + 1) + '\t' + this->getData()->getClassified()[i] << "\n";

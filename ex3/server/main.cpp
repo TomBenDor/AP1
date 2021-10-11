@@ -50,5 +50,5 @@ void handleClient(int clientSock, TCPServer *server) {
 
     CLI<Iris> cli(&io, std::move(commands));
     cli.run();
-    server->disconnectClient(clientSock);
+    server->disconnectClient();
 }

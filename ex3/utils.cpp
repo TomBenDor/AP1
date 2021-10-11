@@ -47,14 +47,14 @@ namespace utils {
         while (std::getline(ss, cell, c)) {
             v.push_back(cell);
         }
-
         return v;
     }
 
+    //Receive from the socket
     std::string recv(int sock) {
         std::string msg;
         std::string ending = "<end>";
-
+        //Read until ending is detected
         char buffer[1];
         while (!std::equal(ending.rbegin(), ending.rend(), msg.rbegin())) {
             buffer[0] = 0;

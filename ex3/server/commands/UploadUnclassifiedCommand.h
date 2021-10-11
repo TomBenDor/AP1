@@ -17,7 +17,7 @@ public:
             this->getData()->setTrain(stringToIrisVector(input, true));
         }
         catch (const char *msg) {
-            this->getIO()->write(msg);
+            this->getIO()->write("Invalid file");
             return;
         }
         this->getIO()->write("Upload Complete.");
@@ -27,7 +27,7 @@ public:
             this->getData()->setTest(stringToIrisVector(input, true));
         }
         catch (const char *msg) {
-            this->getIO()->write(msg);
+            this->getIO()->write("Invalid file");
             return;
         }
         this->getIO()->write("Upload Complete");

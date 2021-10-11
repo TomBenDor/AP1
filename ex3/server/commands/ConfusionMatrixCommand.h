@@ -16,15 +16,12 @@ public:
 
     void execute() override {
         std::vector<T> test = this->getData()->getTest();
-        if (test.empty()) {
-            this->getIO()->write("Upload files first");
-            return;
-        }
         std::vector<std::string> predictions = this->getData()->getClassified();
         if (predictions.empty()) {
             this->getIO()->write("Classify first");
             return;
         }
+        //Create a map containing all predictions and types
         std::map<std::string, std::map<std::string, double>> typeMap;
         for (int i = 0; i < test.size(); i++) {
             if (!typeMap[test[i].getType()].count(predictions[i])) {
@@ -35,16 +32,19 @@ public:
 
         std::vector<std::string> types;
         for (const auto &pair: typeMap) {
+            //Save all test types
             types.push_back(pair.first);
+            //sum all predictions
             double sum = 0;
             for (const auto &keys: pair.second) {
                 sum += keys.second;
             }
+            //Convert the numbers to percentages
             for (const auto &keys: pair.second) {
                 typeMap[pair.first][keys.first] = 100 * keys.second / sum;
             }
         }
-
+        //Add missing types
         for (const auto &pair: typeMap) {
             for (const std::string &type: types) {
                 if (!typeMap[pair.first].count(type)) {
@@ -52,7 +52,7 @@ public:
                 }
             }
         }
-
+        //Convert the map to a matrix of strings
         std::vector<std::vector<std::string>> matrix;
         for (const auto &predictionPercentage: typeMap) {
             std::vector<std::string> currPredictions;

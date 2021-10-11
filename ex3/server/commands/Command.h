@@ -14,7 +14,7 @@ private:
     ClientData<T> *data;
 public:
     std::string getDescription() {
-        return std::string(description);
+        return description;
     }
 
     DefaultIO *getIO() {
