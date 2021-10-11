@@ -13,20 +13,28 @@ public:
     void execute() override {
         this->getIO()->write("Please upload your local train csv file");
         std::string input = this->getIO()->read();
+        if (input.empty()) {
+            this->getIO()->write("Invalid file");
+            return;
+        }
         try {
             this->getData()->setTrain(stringToIrisVector(input, true));
         }
-        catch (const char *msg) {
+        catch (std::exception &e) {
             this->getIO()->write("Invalid file");
             return;
         }
         this->getIO()->write("Upload Complete.");
         this->getIO()->write("Please upload your local test csv file");
         input = this->getIO()->read();
+        if (input.empty()) {
+            this->getIO()->write("Invalid file");
+            return;
+        }
         try {
             this->getData()->setTest(stringToIrisVector(input, true));
         }
-        catch (const char *msg) {
+        catch (std::exception &e) {
             this->getIO()->write("Invalid file");
             return;
         }
