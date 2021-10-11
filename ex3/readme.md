@@ -3,7 +3,8 @@
 ## Implementation
 
 We designed the code so the client and the server will be separated, it means the client doesn't know what the server is
-about to send - all it does is sending messages and receiving messages.
+about to send - all it does is sending messages and receiving messages. Our Server supports unlimited-size messages and
+unlimited amount of columns in a csv file.
 
 ### Communication
 
