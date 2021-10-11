@@ -6,6 +6,13 @@ We designed the code so the client and the server will be separated, it means th
 about to send - all it does is sending messages and receiving messages. Our Server supports unlimited-size messages and
 unlimited amount of columns in a csv file.
 
+We changed the classifier to work when facing an ambiguous decision. The classifier chooses the closest type which has
+the most votes.
+
+We used the Command design pattern in order to handle commands in the server. The base Command class is an abstract
+class, it has access to client data and IO, and each command subclass implements the execution differently. The commands
+are stored in a vector which is also used as a menu, and they are invoked using an index given by the client.
+
 ### Communication
 
 The communication between the client and the server uses the following protocol:
