@@ -8,6 +8,7 @@ class TCPServer {
 private:
     int sockId;
     int queueLen = 5;
+    int clientNum = 0;
     struct sockaddr_in from;
     fd_set readfds;
     struct timeval tv;
@@ -19,6 +20,10 @@ public:
     void close() const;
 
     ~TCPServer() = default;
+
+    void disconnectClient(int sock);
+
+    int getClientNum() const;
 };
 
 
