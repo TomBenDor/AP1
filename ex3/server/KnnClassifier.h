@@ -69,7 +69,11 @@ public:
         int maxOccurrences = std::count_if(std::begin(predictions), std::end(predictions),
                                            [max](std::pair<std::string, int> const &p) { return p.second == max; });
         if (maxOccurrences > 1) {
-            return copy[0].getType();
+            for (auto i: copy) {
+                if (predictions[i.getType()] == maxOccurrences) {
+                    return i.getType();
+                }
+            }
         }
 
         return maxType;

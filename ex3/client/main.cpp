@@ -41,6 +41,7 @@ void handleMessage(const std::string &msg, TCPClient *client) {
         client->close();
         exit(0);
     }
+    //Check if a message should be printed or saved to a file
     std::regex rgx("SAVE <((.|\\n)+)> TO <(.*)>");
     std::smatch matches;
 
@@ -51,6 +52,7 @@ void handleMessage(const std::string &msg, TCPClient *client) {
     }
 }
 
+//Check if a string is a directory of a file
 bool isFile(const std::string &name) {
     struct stat buffer{};
     return ((stat(name.c_str(), &buffer) == 0) and (buffer.st_mode & S_IFREG));

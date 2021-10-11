@@ -53,8 +53,7 @@ void TCPServer::close() const {
 
 }
 
-void TCPServer::disconnectClient(int sock) {
-    ::close(sock);
+void TCPServer::disconnectClient() {
     this->clientNum--;
 }
 

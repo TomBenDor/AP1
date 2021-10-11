@@ -50,16 +50,16 @@ std::vector<Iris> stringToIrisVector(const std::string &encoding, bool isClassif
     for (const std::string &coordinatesEncoding: irisesEncodings) {
         std::vector<std::string> coordinates = utils::split(coordinatesEncoding, ',');
         if (coordinates.size() < 2) {
-            throw "Iris should have at least one coordinate";
+            throw std::invalid_argument("Iris should have at least one coordinate");
         }
         if (coordinates.size() != coordinateNum) {
-            throw "All Irises should have the same amount of coordinates";
+            throw std::invalid_argument("All Irises should have the same amount of coordinates");
         }
         try {
             irises.emplace_back(coordinates, isClassified);
         }
         catch (const std::exception &e) {
-            throw "Invalid coordinates";
+            throw std::invalid_argument("Invalid coordinates");
         }
     }
     return irises;

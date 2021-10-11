@@ -21,7 +21,7 @@ public:
 
     ~TCPServer() = default;
 
-    void disconnectClient(int sock);
+    void disconnectClient();
 
     int getClientNum() const;
 };
