@@ -8,7 +8,7 @@
 #include "thread"
 #include <regex>
 
-void handleMessage(const std::string &msg);
+void handleMessage(const std::string &msg, TCPClient *client);
 
 void receiving(TCPClient *client);
 
@@ -32,12 +32,13 @@ int main() {
 void receiving(TCPClient *client) {
     while (true) {
         const std::string &msg = client->recv();
-        handleMessage(msg);
+        handleMessage(msg, client);
     }
 }
 
-void handleMessage(const std::string &msg) {
+void handleMessage(const std::string &msg, TCPClient *client) {
     if (msg == "exit") {
+        client->close();
         exit(0);
     }
     std::regex rgx("SAVE <((.|\\n)+)> TO <(.*)>");

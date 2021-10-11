@@ -6,7 +6,6 @@
 
 class TCPClient {
 private:
-    bool isConnected = false;
     int sock;
     struct sockaddr_in sin;
 public:
